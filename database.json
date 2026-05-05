@@ -1,0 +1,284 @@
+{
+  "quizzes": [
+    {
+      "id": "7997abb5-2708-4fc6-94a4-cf21721ed506",
+      "title": "quiz js (Copy) (Copy) (Copy)",
+      "description": "",
+      "joinCode": "CLKN00",
+      "isActive": true,
+      "createdAt": "2026-04-24T15:04:01.969Z",
+      "status": "waiting"
+    }
+  ],
+  "questions": [
+    {
+      "id": "c0bac2c3-5986-4b15-be16-b7ac0f00eed9",
+      "quizId": "7997abb5-2708-4fc6-94a4-cf21721ed506",
+      "type": "mcq",
+      "text": "Apa hasil dari kode berikut?\n\nlet x = 10 + 5;\nconsole.log(x);",
+      "timeLimit": 30,
+      "order": 0,
+      "metadata": {},
+      "options": [
+        {
+          "id": "df825ae7-e859-48cf-afa3-039183a30c7d",
+          "text": "10",
+          "isCorrect": false
+        },
+        {
+          "id": "8e6d591b-d69b-47d9-b2d9-52e4ac99bdcf",
+          "text": "15",
+          "isCorrect": true
+        },
+        {
+          "id": "2de30187-80b6-4601-b0b4-0cf5f9c02677",
+          "text": "5",
+          "isCorrect": false
+        },
+        {
+          "id": "3e972b15-c562-43af-8bae-c9097e900836",
+          "text": "20",
+          "isCorrect": false
+        }
+      ]
+    },
+    {
+      "id": "012a0c4e-9d60-4a96-a253-77b49523c9fa",
+      "quizId": "7997abb5-2708-4fc6-94a4-cf21721ed506",
+      "type": "multi_select",
+      "text": "Manakah yang termasuk tipe data di JavaScript?",
+      "timeLimit": 30,
+      "order": 1,
+      "metadata": {},
+      "options": [
+        {
+          "id": "9273b42b-fe16-43b7-a01b-d22c6fa0d226",
+          "text": "String",
+          "isCorrect": true
+        },
+        {
+          "id": "81a7a0d6-6f23-428c-bb84-b72123b8674a",
+          "text": "Number",
+          "isCorrect": true
+        },
+        {
+          "id": "49a2ad44-2a0e-49f1-8830-08ba22c4ede9",
+          "text": "Boolean",
+          "isCorrect": true
+        },
+        {
+          "id": "6934c818-11b7-4409-9111-53b199377903",
+          "text": "Character",
+          "isCorrect": false
+        }
+      ]
+    },
+    {
+      "id": "5f715dfa-1a46-43e7-b1af-b1f94d8f231c",
+      "quizId": "7997abb5-2708-4fc6-94a4-cf21721ed506",
+      "type": "boolean",
+      "text": "Perulangan while akan selalu dijalankan minimal 1 kali",
+      "timeLimit": 30,
+      "order": 2,
+      "metadata": {},
+      "options": [
+        {
+          "id": "b9962ce2-cb98-4825-b38e-180ee347a83e",
+          "text": "Benar",
+          "isCorrect": false
+        },
+        {
+          "id": "218e9997-d204-47bf-9864-4cb47bf2cbbe",
+          "text": "Salah",
+          "isCorrect": true
+        }
+      ]
+    },
+    {
+      "id": "966efeee-4f2b-43a3-ad42-721e4eb7a043",
+      "quizId": "7997abb5-2708-4fc6-94a4-cf21721ed506",
+      "type": "drag_drop",
+      "text": "Lengkapi kode agar menampilkan angka dari 1 sampai 5\n\nfor (let i = ___; i <= ___; i++) { console.log(___}",
+      "timeLimit": 30,
+      "order": 3,
+      "metadata": {
+        "targets": [
+          {
+            "id": "t1",
+            "text": "Slot 1"
+          },
+          {
+            "id": "t2",
+            "text": "Slot 2"
+          },
+          {
+            "id": "t3",
+            "text": "Slot 3"
+          }
+        ],
+        "items": [
+          {
+            "id": "i1777038374320",
+            "text": "1",
+            "correctTargetId": "t1"
+          },
+          {
+            "id": "i1777039457526",
+            "text": "5",
+            "correctTargetId": "t2"
+          },
+          {
+            "id": "i1777039470222",
+            "text": "i",
+            "correctTargetId": "t3"
+          },
+          {
+            "id": "i1777039509684",
+            "text": ";",
+            "correctTargetId": null
+          }
+        ]
+      },
+      "options": [
+        {
+          "id": "2461fbdf-142f-483d-a5f9-00a2780635f6",
+          "text": "i",
+          "isCorrect": true
+        }
+      ]
+    },
+    {
+      "id": "6ae9c683-0942-434c-8ae7-72929d6e6a78",
+      "quizId": "7997abb5-2708-4fc6-94a4-cf21721ed506",
+      "type": "fill_in_the_blank",
+      "text": "Lengkapi kode agar menampilkan angka dari 1 sampai 5\n\nfor (let i = ___; i <= ___; i++) { console.log(___}",
+      "timeLimit": 30,
+      "order": 4,
+      "metadata": {},
+      "options": [
+        {
+          "id": "746bfafe-afec-49fc-8d06-696eb52ee249",
+          "text": "1",
+          "isCorrect": true
+        },
+        {
+          "id": "68cf97c8-d982-46ba-bfa7-98e17a5676af",
+          "text": "5",
+          "isCorrect": true
+        },
+        {
+          "id": "f46caf34-ae3b-497b-adcf-30f309d452f5",
+          "text": "i",
+          "isCorrect": true
+        }
+      ]
+    },
+    {
+      "id": "2a328b2b-bfa1-471e-b099-59008a398065",
+      "quizId": "7997abb5-2708-4fc6-94a4-cf21721ed506",
+      "type": "poll",
+      "text": "haloo",
+      "timeLimit": 30,
+      "order": 5,
+      "metadata": {
+        "options": [
+          "Pilihan A",
+          "Pilihan B"
+        ],
+        "pollResults": {
+          "unknown": 2,
+          "undefined": 2,
+          "cf2ab7ab-376c-42a2-9162-644a7248314f": 1,
+          "b7ab7511-e58b-4808-adf3-8064afa73b3a": 1
+        }
+      },
+      "options": [
+        {
+          "id": "10f93cc9-1ea3-4ccc-8f20-d0b3604aad02",
+          "text": "hai",
+          "isCorrect": true
+        },
+        {
+          "id": "b6b9bfbf-5f0e-4aa9-8cec-37ceb1f689a4",
+          "text": "apaan sih",
+          "isCorrect": false
+        },
+        {
+          "id": "e2ff596c-3013-4063-b297-44451fa938be",
+          "text": "gaje",
+          "isCorrect": false
+        },
+        {
+          "id": "cd166e0c-e7e9-4159-bd02-e9ce9f2e3095",
+          "text": "cuihh",
+          "isCorrect": false
+        }
+      ]
+    },
+    {
+      "id": "7e34b82d-b25d-4a46-8ac8-b76eb287b939",
+      "quizId": "7997abb5-2708-4fc6-94a4-cf21721ed506",
+      "type": "match",
+      "text": "pasangkan dengan pilihan yang tepat",
+      "timeLimit": 30,
+      "order": 6,
+      "metadata": {
+        "items": [
+          {
+            "id": "2535d5e3-a1d4-4c34-8dc6-b7d2821a7107",
+            "text": "string",
+            "side": "left"
+          },
+          {
+            "id": "bb0b83f8-a916-480e-abdf-5e66adc1f160",
+            "text": "\"haloo\"",
+            "side": "right"
+          },
+          {
+            "id": "f0777e0c-1853-4dcf-bb1e-c692bb3a0bd9",
+            "text": "number",
+            "side": "left"
+          },
+          {
+            "id": "1d7c3bb9-79c9-4d55-a817-9c20189c2b67",
+            "text": "5",
+            "side": "right"
+          }
+        ],
+        "pairs": [
+          {
+            "id": "2535d5e3-a1d4-4c34-8dc6-b7d2821a7107",
+            "right": "bb0b83f8-a916-480e-abdf-5e66adc1f160"
+          },
+          {
+            "id": "f0777e0c-1853-4dcf-bb1e-c692bb3a0bd9",
+            "right": "1d7c3bb9-79c9-4d55-a817-9c20189c2b67"
+          }
+        ]
+      },
+      "options": [
+        {
+          "id": "2d54dfcf-adef-418c-8c96-f16ad1c80b80",
+          "text": "",
+          "isCorrect": true
+        },
+        {
+          "id": "0579fbc3-1c21-4094-b66c-68c2bc591118",
+          "text": "",
+          "isCorrect": false
+        },
+        {
+          "id": "a9b09ed9-efcd-4379-b5cb-6b1cecbb3d2d",
+          "text": "",
+          "isCorrect": false
+        },
+        {
+          "id": "43d68f85-fefe-4f10-a1e1-91e98707a869",
+          "text": "",
+          "isCorrect": false
+        }
+      ]
+    }
+  ],
+  "attempts": []
+}
