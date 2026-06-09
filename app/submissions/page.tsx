@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
 import {
@@ -10,23 +10,11 @@ import {
   FileText,
   Trash2,
   ArrowLeft,
-  Download,
-  Clock,
   CheckCircle,
   AlertCircle,
   Loader2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-interface Submission {
-  id: string;
-  groupName: string;
-  members: string[];
-  fileName: string;
-  fileSize: number;
-  filePath: string;
-  submittedAt: string;
-}
 
 export default function SubmissionsPage() {
   const [groupName, setGroupName] = useState("");
@@ -35,8 +23,6 @@ export default function SubmissionsPage() {
   const [isDragOver, setIsDragOver] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
-  const [submissions, setSubmissions] = useState<Submission[]>([]);
-  const [isHistoryLoading, setIsHistoryLoading] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Parse comma-separated members into an array for preview badges
@@ -44,28 +30,6 @@ export default function SubmissionsPage() {
     .split(",")
     .map((m) => m.trim())
     .filter((m) => m.length > 0);
-
-  // Fetch submissions on load
-  const fetchSubmissions = async () => {
-    try {
-      const res = await fetch("/api/submissions");
-      if (res.ok) {
-        const data = await res.json();
-        // Sort by submittedAt descending
-        setSubmissions(data.sort((a: Submission, b: Submission) => 
-          new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime()
-        ));
-      }
-    } catch (err) {
-      console.error("Gagal mengambil riwayat tugas:", err);
-    } finally {
-      setIsHistoryLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchSubmissions();
-  }, []);
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -136,8 +100,6 @@ export default function SubmissionsPage() {
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
         }
-        // Refresh history
-        fetchSubmissions();
       } else {
         setMessage({ type: "error", text: data.error || "Gagal mengunggah tugas." });
       }
@@ -155,17 +117,6 @@ export default function SubmissionsPage() {
     const sizes = ["Bytes", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
-  };
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("id-ID", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
   };
 
   return (
@@ -192,7 +143,7 @@ export default function SubmissionsPage() {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-12 max-w-4xl space-y-12">
+      <main className="container mx-auto px-4 py-12 max-w-2xl space-y-12">
         {/* Intro Section */}
         <div className="text-center space-y-3">
           <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
@@ -288,7 +239,7 @@ export default function SubmissionsPage() {
             <div className="space-y-2">
               <label className="text-sm font-bold text-slate-700 dark:text-slate-300 flex items-center gap-2">
                 <FileText className="h-4 w-4 text-indigo-500" />
-                File Tugas (.zip, .rar, .pdf, .js, .json)
+                File Tugas (.html, .css, .js, .zip, .rar, .docx, .pdf, etc.)
               </label>
 
               {!file ? (
@@ -307,7 +258,7 @@ export default function SubmissionsPage() {
                     type="file"
                     ref={fileInputRef}
                     onChange={handleFileChange}
-                    accept=".zip,.rar,.pdf,.js,.json,.docx"
+                    accept=".html,.css,.js,.ts,.tsx,.jsx,.json,.txt,.zip,.rar,.pdf,.docx"
                     className="hidden"
                   />
                   <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-900 text-slate-400 dark:text-slate-600 flex items-center justify-center mb-3">
@@ -317,7 +268,7 @@ export default function SubmissionsPage() {
                     Seret & letakkan file Anda di sini, atau klik untuk memilih berkas
                   </p>
                   <p className="text-xs text-slate-400 dark:text-slate-500 mt-1.5 font-normal">
-                    Format yang didukung: ZIP, RAR, PDF, JS, JSON (Maksimal 10MB)
+                    Format: HTML, CSS, JS, ZIP, RAR, TXT, PDF, DOCX (Maksimal 10MB)
                   </p>
                 </div>
               ) : (
@@ -364,92 +315,12 @@ export default function SubmissionsPage() {
             </Button>
           </form>
         </div>
-
-        {/* Submission History Section */}
-        <div className="space-y-6">
-          <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
-            <h2 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2.5">
-              <Clock className="h-5 w-5 text-violet-500" />
-              Riwayat Pengumpulan Tugas
-            </h2>
-            <span className="text-xs font-mono text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-900 px-2 py-1 rounded-md">
-              {submissions.length} Total
-            </span>
-          </div>
-
-          {isHistoryLoading ? (
-            <div className="py-12 flex flex-col items-center justify-center text-slate-400">
-              <Loader2 className="h-8 w-8 animate-spin text-violet-500 mb-2" />
-              <p className="text-sm font-medium">Memuat riwayat pengumpulan...</p>
-            </div>
-          ) : submissions.length === 0 ? (
-            <div className="py-16 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-3xl flex flex-col items-center justify-center">
-              <div className="w-12 h-12 bg-slate-100 dark:bg-slate-900 text-slate-400 dark:text-slate-600 rounded-full flex items-center justify-center mb-3">
-                <FileText className="h-6 w-6" />
-              </div>
-              <p className="text-sm font-bold text-slate-700 dark:text-slate-300">Belum ada tugas yang dikumpulkan</p>
-              <p className="text-xs text-slate-400 dark:text-slate-500 mt-1 font-normal">Kirim tugas kelompok Anda di atas untuk memulai.</p>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {submissions.map((submission) => (
-                <div
-                  key={submission.id}
-                  className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700/80 rounded-2xl p-5 shadow-sm transition-all flex flex-col md:flex-row md:items-center justify-between gap-5 relative overflow-hidden"
-                >
-                  <div className="space-y-2.5 min-w-0">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="font-extrabold text-slate-950 dark:text-white text-base">
-                        {submission.groupName}
-                      </h3>
-                      <span className="text-xs font-mono text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-950/60 px-2 py-0.5 border border-slate-200/50 dark:border-slate-800/80 rounded-md">
-                        {formatDate(submission.submittedAt)}
-                      </span>
-                    </div>
-
-                    {/* Member List Badges */}
-                    <div className="flex flex-wrap gap-1.5">
-                      {submission.members.map((member, idx) => (
-                        <span
-                          key={idx}
-                          className="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-semibold rounded-full"
-                        >
-                          {member}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* File Attachment Info */}
-                    <div className="flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400">
-                      <FileText className="h-4 w-4 text-slate-400 flex-shrink-0" />
-                      <span className="truncate max-w-[200px] sm:max-w-md font-semibold">
-                        {submission.fileName}
-                      </span>
-                      <span className="text-slate-300 dark:text-slate-700">|</span>
-                      <span>{formatBytes(submission.fileSize)}</span>
-                    </div>
-                  </div>
-
-                  {/* Actions (Download) */}
-                  <a
-                    href={submission.filePath}
-                    download={submission.fileName}
-                    className="inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-violet-600 dark:hover:bg-violet-600 hover:text-white dark:hover:text-white text-slate-700 dark:text-slate-300 text-xs font-bold transition-all flex-shrink-0 cursor-pointer shadow-sm"
-                  >
-                    <Download className="h-4 w-4" />
-                    UNDUH FILE
-                  </a>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
       </main>
 
       {/* Footer */}
       <footer className="py-8 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 transition-colors mt-20 text-center">
         <p className="text-slate-400 dark:text-slate-500 text-xs font-normal">
-          &copy; {new Date().getFullYear()} LearnJS. Halaman pengumpulan tugas kelompok interaktif.
+          &copy; {new Date().getFullYear()} LearnJS. Halaman pengumpulan tugas kelompok.
         </p>
       </footer>
     </div>

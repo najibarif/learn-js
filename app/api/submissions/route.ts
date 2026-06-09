@@ -1,6 +1,60 @@
 import { NextResponse } from "next/server";
+import { Redis } from "@upstash/redis";
 import fs from "fs";
 import path from "path";
+
+const redisUrl = process.env.UPSTASH_REDIS_REST_URL;
+const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
+const SUBMISSIONS_KEY = "learnjs_submissions";
+
+const redis = new Redis({
+  url: redisUrl || "http://localhost",
+  token: redisToken || "",
+});
+
+const isRedisAvailable = !!(redisUrl && redisUrl !== "http://localhost" && redisToken);
+
+async function getSubmissionsList() {
+  if (isRedisAvailable) {
+    try {
+      const data = await redis.get<any[]>(SUBMISSIONS_KEY);
+      return data || [];
+    } catch (e) {
+      console.error("Redis error reading submissions, falling back to local:", e);
+    }
+  }
+  
+  // Local fallback
+  try {
+    const filePath = path.join(process.cwd(), "submissions.json");
+    if (fs.existsSync(filePath)) {
+      const content = fs.readFileSync(filePath, "utf8");
+      return JSON.parse(content);
+    }
+  } catch (e) {
+    console.error("Local file error reading submissions:", e);
+  }
+  return [];
+}
+
+async function saveSubmissionsList(list: any[]) {
+  if (isRedisAvailable) {
+    try {
+      await redis.set(SUBMISSIONS_KEY, list);
+      return;
+    } catch (e) {
+      console.error("Redis error writing submissions:", e);
+    }
+  }
+  
+  // Local fallback
+  try {
+    const filePath = path.join(process.cwd(), "submissions.json");
+    fs.writeFileSync(filePath, JSON.stringify(list, null, 2), "utf8");
+  } catch (e) {
+    console.error("Local file error writing submissions:", e);
+  }
+}
 
 export async function POST(req: Request) {
   try {
@@ -28,20 +82,9 @@ export async function POST(req: Request) {
       );
     }
 
-    // Ensure public/uploads directory exists
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
-
-    const timestamp = Date.now();
-    const cleanFileName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, "_");
-    const safeFileName = `${timestamp}-${cleanFileName}`;
-    const filePath = path.join(uploadDir, safeFileName);
-
-    // Write file to filesystem
+    // Convert file to Base64 string to avoid writing to read-only disk on Vercel
     const buffer = Buffer.from(await file.arrayBuffer());
-    fs.writeFileSync(filePath, buffer);
+    const base64Data = buffer.toString("base64");
 
     const submissionId = crypto.randomUUID ? crypto.randomUUID() : `sub-${Date.now()}`;
     const newSubmission = {
@@ -50,28 +93,25 @@ export async function POST(req: Request) {
       members,
       fileName: file.name,
       fileSize: file.size,
-      filePath: `/uploads/${safeFileName}`,
+      fileType: file.type,
+      fileData: base64Data, // Stored directly in the database/JSON
       submittedAt: new Date().toISOString(),
     };
 
-    // Store in submissions.json locally
-    const submissionsFilePath = path.join(process.cwd(), "submissions.json");
-    let submissions = [];
-    if (fs.existsSync(submissionsFilePath)) {
-      try {
-        const fileContent = fs.readFileSync(submissionsFilePath, "utf8");
-        submissions = JSON.parse(fileContent);
-      } catch (e) {
-        console.error("Error reading submissions.json, initializing empty array:", e);
-      }
-    }
-
+    const submissions = await getSubmissionsList();
     submissions.push(newSubmission);
-    fs.writeFileSync(submissionsFilePath, JSON.stringify(submissions, null, 2), "utf8");
+    await saveSubmissionsList(submissions);
 
     return NextResponse.json({
       success: true,
-      submission: newSubmission,
+      submission: {
+        id: newSubmission.id,
+        groupName: newSubmission.groupName,
+        members: newSubmission.members,
+        fileName: newSubmission.fileName,
+        fileSize: newSubmission.fileSize,
+        submittedAt: newSubmission.submittedAt,
+      },
     });
   } catch (err: any) {
     console.error("Error in POST /api/submissions:", err);
@@ -84,17 +124,21 @@ export async function POST(req: Request) {
 
 export async function GET() {
   try {
-    const submissionsFilePath = path.join(process.cwd(), "submissions.json");
-    let submissions = [];
-    if (fs.existsSync(submissionsFilePath)) {
-      try {
-        const fileContent = fs.readFileSync(submissionsFilePath, "utf8");
-        submissions = JSON.parse(fileContent);
-      } catch (e) {
-        console.error("Error reading submissions.json:", e);
-      }
-    }
-    return NextResponse.json(submissions);
+    const submissions = await getSubmissionsList();
+    
+    // EXCLUDE the heavy fileData (Base64 string) from the list view response to keep it small and fast!
+    const lightSubmissions = submissions.map((sub: any) => ({
+      id: sub.id,
+      groupName: sub.groupName,
+      members: sub.members,
+      fileName: sub.fileName,
+      fileSize: sub.fileSize,
+      submittedAt: sub.submittedAt,
+      // We serve a custom download API path
+      filePath: `/api/submissions/download?id=${sub.id}`,
+    }));
+
+    return NextResponse.json(lightSubmissions);
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }

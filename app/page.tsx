@@ -60,6 +60,15 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [activeId]);
 
+  const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+      window.history.pushState(null, "", `#${id}`);
+    }
+  };
+
   // If on landing page (no active topic), show the landing page
   if (activeId === null || !activeTopic) {
     return (
@@ -80,8 +89,8 @@ export default function Home() {
             </div>
             <div className="flex items-center gap-4">
               <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600 dark:text-slate-300">
-                <a href="#fitur" className="hover:text-violet-500 transition-colors">Fitur</a>
-                <a href="#kurikulum" className="hover:text-violet-500 transition-colors">Kurikulum</a>
+                <a href="#fitur" onClick={(e) => handleAnchorClick(e, "fitur")} className="hover:text-violet-500 transition-colors">Fitur</a>
+                <a href="#kurikulum" onClick={(e) => handleAnchorClick(e, "kurikulum")} className="hover:text-violet-500 transition-colors">Kurikulum</a>
                 <Link href="/submissions" className="hover:text-violet-500 transition-colors font-semibold text-violet-600 dark:text-violet-400">Kumpul Tugas</Link>
                 <Link href="/quiz" className="hover:text-violet-500 transition-colors">Kuis</Link>
               </nav>
@@ -119,6 +128,7 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
                 <a
                   href="#kurikulum"
+                  onClick={(e) => handleAnchorClick(e, "kurikulum")}
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:opacity-95 text-white font-bold text-base shadow-lg shadow-violet-500/25 hover:shadow-violet-500/40 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
                 >
                   Mulai Belajar
@@ -282,8 +292,8 @@ export default function Home() {
               <span className="font-black text-lg text-slate-900 dark:text-white tracking-tight">LearnJS</span>
             </div>
             <div className="flex flex-wrap justify-center gap-6 text-sm text-slate-500 dark:text-slate-400">
-              <a href="#fitur" className="hover:text-violet-500 transition-colors">Tentang Kami</a>
-              <a href="#kurikulum" className="hover:text-violet-500 transition-colors">Kurikulum</a>
+              <a href="#fitur" onClick={(e) => handleAnchorClick(e, "fitur")} className="hover:text-violet-500 transition-colors">Tentang Kami</a>
+              <a href="#kurikulum" onClick={(e) => handleAnchorClick(e, "kurikulum")} className="hover:text-violet-500 transition-colors">Kurikulum</a>
               <Link href="/submissions" className="hover:text-violet-500 transition-colors font-bold text-violet-600">Kumpul Tugas Kelompok</Link>
               <Link href="/quiz" className="hover:text-violet-500 transition-colors font-bold text-indigo-500">Ikut Kuis Interaktif</Link>
             </div>
