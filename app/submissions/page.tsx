@@ -232,12 +232,12 @@ export default function SubmissionsPage() {
                 <select
                   value={assignmentId}
                   onChange={(e) => setAssignmentId(e.target.value)}
-                  className="w-full h-12 px-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:ring-2 focus:ring-violet-500 focus:bg-white dark:focus:bg-slate-900 focus:border-transparent outline-none transition-all text-sm font-semibold cursor-pointer text-slate-800 dark:text-slate-200"
+                  className="w-full h-12 px-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:ring-2 focus:ring-violet-500 focus:bg-white dark:focus:bg-slate-900 focus:border-transparent outline-none transition-all text-sm font-semibold cursor-pointer text-slate-800 dark:text-slate-200 font-sans"
                   disabled={loading}
                 >
-                  <option value="" className="text-slate-400">-- Pilih Target Folder Tugas --</option>
+                  <option value="" className="text-slate-400 font-sans">-- Pilih Target Folder Tugas --</option>
                   {assignments.map((asm) => (
-                    <option key={asm.id} value={asm.id} className="text-slate-800 dark:text-slate-200">
+                    <option key={asm.id} value={asm.id} className="text-slate-850 dark:text-slate-200 font-sans">
                       {asm.title} {asm.description ? `(${asm.description})` : ""}
                     </option>
                   ))}
