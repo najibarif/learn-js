@@ -5,10 +5,10 @@ export function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const adminAuth = request.cookies.get('admin_auth');
 
-  // Protect all /admin routes except /admin/quiz/login
-  if (path.startsWith('/admin') && path !== '/admin/quiz/login') {
+  // Protect all /admin routes except /admin/login
+  if (path.startsWith('/admin') && path !== '/admin/login') {
     if (!adminAuth || adminAuth.value !== 'true') {
-      return NextResponse.redirect(new URL('/admin/quiz/login', request.url));
+      return NextResponse.redirect(new URL('/admin/login', request.url));
     }
   }
 

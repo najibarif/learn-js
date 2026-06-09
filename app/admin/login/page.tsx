@@ -27,10 +27,10 @@ export default function AdminLoginPage() {
       
       const data = await res.json();
       if (res.ok && data.success) {
-        // Redirect to admin dashboard
+        // Redirect to main admin portal
         // Refresh router so layout correctly reads new cookie
         router.refresh();
-        router.push('/admin/quiz');
+        router.push('/admin');
       } else {
         setError(data.error || 'Password salah');
         setLoading(false);
@@ -42,7 +42,7 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center p-4 relative overflow-hidden font-sans">
       {/* Decorative background */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-500/10 blur-[100px] rounded-full pointer-events-none" />
 
@@ -84,8 +84,6 @@ export default function AdminLoginPage() {
               {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Masuk Sistem"}
             </Button>
           </form>
-
-
         </div>
       </div>
     </div>

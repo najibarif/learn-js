@@ -224,9 +224,9 @@ export default function AdminSubmissionsPage() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link
-              href="/admin/quiz"
+              href="/admin"
               className="p-1.5 rounded-lg text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-              title="Kembali ke Dashboard Kuis"
+              title="Kembali ke Portal Admin"
             >
               <ArrowLeft className="h-5 w-5" />
             </Link>
@@ -249,7 +249,7 @@ export default function AdminSubmissionsPage() {
                variant="outline" 
                onClick={async () => {
                  await fetch('/api/quiz/admin/logout', { method: 'POST' });
-                 window.location.href = '/admin/quiz/login';
+                 window.location.href = '/admin/login';
                }}
                className="text-slate-500 border-slate-200 hover:bg-slate-100 dark:hover:bg-slate-850 rounded-xl px-4 h-9 text-xs font-bold transition-all"
              >

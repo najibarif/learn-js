@@ -7,7 +7,7 @@ export default async function SecureAdminLayout({ children }: { children: React.
   
   if (!adminCookie || adminCookie.value !== 'true') {
     // Arahkan ke halaman login jika tidak punya token
-    redirect('/admin/quiz/login');
+    redirect('/admin/login');
   }
 
   return <>{children}</>;
