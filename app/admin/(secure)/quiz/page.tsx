@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { PlusCircle, Settings, Users, PlayCircle, BarChart3, Trash2, Loader2, Copy, Pencil } from 'lucide-react';
+import { PlusCircle, Settings, Users, PlayCircle, BarChart3, Trash2, Loader2, Copy, Pencil, ArrowLeft, Code } from 'lucide-react';
+import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
 
 interface Quiz {
@@ -94,40 +95,61 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 p-6 md:p-12">
-      <div className="max-w-6xl mx-auto">
-        <header className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
-          <div>
-            <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Quiz Admin</h1>
-            <p className="text-slate-500 mt-1">Kelola kuis, lihat hasil, dan pantau aktivitas siswa.</p>
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors duration-300 font-sans">
+      {/* Header */}
+      <header className="sticky top-0 z-50 border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-sm shadow-sm transition-colors">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Link
+              href="/"
+              className="p-1.5 rounded-lg text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              title="Kembali ke Beranda Utama"
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </Link>
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm">
+              <Code className="h-4 w-4 text-white" />
+            </div>
+            <span className="font-black text-lg text-slate-900 dark:text-white tracking-tight">LearnJS Admin</span>
+            <span className="h-4 w-[1px] bg-slate-200 dark:bg-slate-800 mx-1" />
+            <span className="text-sm font-semibold text-slate-500 dark:text-slate-400">Pengelolaan Kuis</span>
           </div>
           <div className="flex items-center gap-3">
-            <Link href="/admin/submissions">
-              <Button 
-                variant="outline" 
-                className="text-indigo-600 border-indigo-200 dark:border-indigo-900/50 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 rounded-xl px-4 h-11 font-bold text-xs"
-              >
-                TUGAS ADMIN
-              </Button>
-            </Link>
-            <Button 
-              variant="outline" 
-              onClick={async () => {
-                await fetch('/api/quiz/admin/logout', { method: 'POST' });
-                window.location.href = '/admin/quiz/login';
-              }}
-              className="text-slate-500 border-slate-200 hover:bg-slate-100 rounded-xl px-4 h-11 text-xs font-bold"
-            >
-              SIGN OUT
-            </Button>
-            <Link href="/admin/quiz/create">
-              <Button className="bg-indigo-600 hover:bg-indigo-700 text-white gap-2 rounded-xl h-11 px-6 shadow-sm text-xs font-bold">
-                <PlusCircle className="h-4 w-4" />
-                BUAT KUIS BARU
-              </Button>
-            </Link>
+             <Link href="/admin/submissions">
+                <Button variant="ghost" className="text-xs font-bold text-slate-500 hover:text-slate-900 dark:hover:text-white rounded-lg">
+                  Tugas Admin
+                </Button>
+             </Link>
+             <ThemeToggle />
+             <span className="h-4 w-[1px] bg-slate-200 dark:bg-slate-800 mx-1" />
+             <Button 
+               variant="outline" 
+               onClick={async () => {
+                 await fetch('/api/quiz/admin/logout', { method: 'POST' });
+                 window.location.href = '/admin/quiz/login';
+               }}
+               className="text-slate-500 border-slate-200 hover:bg-slate-100 dark:hover:bg-slate-850 rounded-xl px-4 h-9 text-xs font-bold transition-all"
+             >
+               SIGN OUT
+             </Button>
           </div>
-        </header>
+        </div>
+      </header>
+
+      <main className="container mx-auto px-4 py-10 max-w-6xl space-y-8">
+        {/* Intro */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div>
+            <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Quiz Admin Dashboard</h1>
+            <p className="text-slate-500 dark:text-slate-400 mt-1 font-medium text-sm">Kelola kuis, lihat hasil, dan pantau aktivitas siswa.</p>
+          </div>
+          <Link href="/admin/quiz/create">
+            <Button className="bg-indigo-600 hover:bg-indigo-700 text-white gap-2 rounded-xl h-11 px-6 shadow-md shadow-indigo-500/20 hover:scale-[1.01] active:scale-[0.99] transition-all text-xs font-bold">
+              <PlusCircle className="h-4 w-4" />
+              BUAT KUIS BARU
+            </Button>
+          </Link>
+        </div>
 
         {loading ? (
           <div className="flex justify-center items-center py-24">
@@ -238,7 +260,7 @@ export default function AdminDashboard() {
             ))}
           </div>
         )}
-      </div>
+      </main>
     </div>
   );
 }

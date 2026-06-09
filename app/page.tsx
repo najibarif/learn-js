@@ -60,6 +60,33 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [activeId]);
 
+  const smoothScrollTo = (targetPosition: number, duration: number = 500) => {
+    const startPosition = window.scrollY || document.documentElement.scrollTop;
+    const distance = targetPosition - startPosition;
+    let startTime: number | null = null;
+
+    const ease = (t: number, b: number, c: number, d: number) => {
+      t /= d / 2;
+      if (t < 1) return (c / 2) * t * t + b;
+      t--;
+      return (-c / 2) * (t * (t - 2) - 1) + b;
+    };
+
+    const animation = (currentTime: number) => {
+      if (startTime === null) startTime = currentTime;
+      const timeElapsed = currentTime - startTime;
+      const run = ease(timeElapsed, startPosition, distance, duration);
+      window.scrollTo(0, run);
+      if (timeElapsed < duration) {
+        requestAnimationFrame(animation);
+      } else {
+        window.scrollTo(0, targetPosition);
+      }
+    };
+
+    requestAnimationFrame(animation);
+  };
+
   const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     const element = document.getElementById(id);
@@ -70,10 +97,7 @@ export default function Home() {
       const elementPosition = elementRect - bodyRect;
       const offsetPosition = elementPosition - offset;
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-      });
+      smoothScrollTo(offsetPosition, 600);
       window.history.pushState(null, "", `#${id}`);
     }
   };
@@ -101,7 +125,6 @@ export default function Home() {
                 <a href="#fitur" onClick={(e) => handleAnchorClick(e, "fitur")} className="hover:text-violet-500 transition-colors">Fitur</a>
                 <a href="#kurikulum" onClick={(e) => handleAnchorClick(e, "kurikulum")} className="hover:text-violet-500 transition-colors">Kurikulum</a>
                 <Link href="/submissions" className="hover:text-violet-500 transition-colors font-semibold text-violet-600 dark:text-violet-400">Kumpul Tugas</Link>
-                <Link href="/quiz" className="hover:text-violet-500 transition-colors">Kuis</Link>
               </nav>
               <div className="h-5 w-[1px] bg-slate-200 dark:bg-slate-800 hidden md:block" />
               <Link
