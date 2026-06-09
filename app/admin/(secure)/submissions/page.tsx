@@ -244,6 +244,17 @@ export default function AdminSubmissionsPage() {
                 </Button>
              </Link>
              <ThemeToggle />
+             <span className="h-4 w-[1px] bg-slate-200 dark:bg-slate-800 mx-1" />
+             <Button 
+               variant="outline" 
+               onClick={async () => {
+                 await fetch('/api/quiz/admin/logout', { method: 'POST' });
+                 window.location.href = '/admin/quiz/login';
+               }}
+               className="text-slate-500 border-slate-200 hover:bg-slate-100 dark:hover:bg-slate-850 rounded-xl px-4 h-9 text-xs font-bold transition-all"
+             >
+               SIGN OUT
+             </Button>
           </div>
         </div>
       </header>
