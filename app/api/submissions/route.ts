@@ -1,71 +1,31 @@
 import { NextResponse } from "next/server";
-import { Redis } from "@upstash/redis";
-import fs from "fs";
-import path from "path";
-
-const redisUrl = process.env.UPSTASH_REDIS_REST_URL;
-const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
-const SUBMISSIONS_KEY = "learnjs_submissions";
-
-const redis = new Redis({
-  url: redisUrl || "http://localhost",
-  token: redisToken || "",
-});
-
-const isRedisAvailable = !!(redisUrl && redisUrl !== "http://localhost" && redisToken);
-
-async function getSubmissionsList() {
-  if (isRedisAvailable) {
-    try {
-      const data = await redis.get<any[]>(SUBMISSIONS_KEY);
-      return data || [];
-    } catch (e) {
-      console.error("Redis error reading submissions, falling back to local:", e);
-    }
-  }
-  
-  // Local fallback
-  try {
-    const filePath = path.join(process.cwd(), "submissions.json");
-    if (fs.existsSync(filePath)) {
-      const content = fs.readFileSync(filePath, "utf8");
-      return JSON.parse(content);
-    }
-  } catch (e) {
-    console.error("Local file error reading submissions:", e);
-  }
-  return [];
-}
-
-async function saveSubmissionsList(list: any[]) {
-  if (isRedisAvailable) {
-    try {
-      await redis.set(SUBMISSIONS_KEY, list);
-      return;
-    } catch (e) {
-      console.error("Redis error writing submissions:", e);
-    }
-  }
-  
-  // Local fallback
-  try {
-    const filePath = path.join(process.cwd(), "submissions.json");
-    fs.writeFileSync(filePath, JSON.stringify(list, null, 2), "utf8");
-  } catch (e) {
-    console.error("Local file error writing submissions:", e);
-  }
-}
+import {
+  getSubmissionsList,
+  saveSubmissionsList,
+  getAssignmentsList,
+  Submission
+} from "@/lib/submissions-db";
 
 export async function POST(req: Request) {
   try {
     const formData = await req.formData();
     const groupName = formData.get("groupName") as string;
     const membersString = formData.get("members") as string;
+    const assignmentId = formData.get("assignmentId") as string;
     const file = formData.get("file") as File;
 
-    if (!groupName || !membersString || !file) {
+    if (!groupName || !membersString || !assignmentId || !file) {
       return NextResponse.json(
-        { error: "Semua input (nama kelompok, anggota, dan file tugas) wajib diisi." },
+        { error: "Semua input (nama kelompok, anggota, target tugas, dan file tugas) wajib diisi." },
+        { status: 400 }
+      );
+    }
+
+    const assignments = await getAssignmentsList();
+    const targetAssignment = assignments.find(a => a.id === assignmentId);
+    if (!targetAssignment) {
+      return NextResponse.json(
+        { error: "Folder tugas yang Anda pilih tidak valid atau telah dihapus." },
         { status: 400 }
       );
     }
@@ -87,8 +47,9 @@ export async function POST(req: Request) {
     const base64Data = buffer.toString("base64");
 
     const submissionId = crypto.randomUUID ? crypto.randomUUID() : `sub-${Date.now()}`;
-    const newSubmission = {
+    const newSubmission: Submission = {
       id: submissionId,
+      assignmentId,
       groupName,
       members,
       fileName: file.name,
@@ -106,6 +67,7 @@ export async function POST(req: Request) {
       success: true,
       submission: {
         id: newSubmission.id,
+        assignmentId: newSubmission.assignmentId,
         groupName: newSubmission.groupName,
         members: newSubmission.members,
         fileName: newSubmission.fileName,
@@ -122,13 +84,22 @@ export async function POST(req: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    const submissions = await getSubmissionsList();
+    const { searchParams } = new URL(req.url);
+    const assignmentId = searchParams.get("assignmentId");
+
+    let submissions = await getSubmissionsList();
+
+    // Filter by assignmentId if provided
+    if (assignmentId) {
+      submissions = submissions.filter((sub) => sub.assignmentId === assignmentId);
+    }
     
     // EXCLUDE the heavy fileData (Base64 string) from the list view response to keep it small and fast!
     const lightSubmissions = submissions.map((sub: any) => ({
       id: sub.id,
+      assignmentId: sub.assignmentId,
       groupName: sub.groupName,
       members: sub.members,
       fileName: sub.fileName,

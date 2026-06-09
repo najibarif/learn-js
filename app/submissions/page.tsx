@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
 import {
@@ -12,7 +12,8 @@ import {
   ArrowLeft,
   CheckCircle,
   AlertCircle,
-  Loader2
+  Loader2,
+  FolderOpen
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -24,6 +25,34 @@ export default function SubmissionsPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Folders/Assignments states
+  interface Assignment {
+    id: string;
+    title: string;
+    description: string;
+    createdAt: string;
+  }
+  const [assignments, setAssignments] = useState<Assignment[]>([]);
+  const [assignmentId, setAssignmentId] = useState("");
+  const [assignmentsLoading, setAssignmentsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAssignments = async () => {
+      try {
+        const res = await fetch("/api/assignments");
+        if (res.ok) {
+          const data = await res.json();
+          setAssignments(data);
+        }
+      } catch (err) {
+        console.error("Gagal memuat folder tugas:", err);
+      } finally {
+        setAssignmentsLoading(false);
+      }
+    };
+    fetchAssignments();
+  }, []);
 
   // Parse comma-separated members into an array for preview badges
   const parsedMembers = membersInput
@@ -66,6 +95,10 @@ export default function SubmissionsPage() {
     e.preventDefault();
     setMessage(null);
 
+    if (!assignmentId) {
+      setMessage({ type: "error", text: "Silakan pilih folder tugas tujuan terlebih dahulu." });
+      return;
+    }
     if (!groupName.trim()) {
       setMessage({ type: "error", text: "Nama kelompok wajib diisi." });
       return;
@@ -83,6 +116,7 @@ export default function SubmissionsPage() {
     const formData = new FormData();
     formData.append("groupName", groupName.trim());
     formData.append("members", parsedMembers.join(","));
+    formData.append("assignmentId", assignmentId);
     formData.append("file", file);
 
     try {
@@ -96,6 +130,7 @@ export default function SubmissionsPage() {
         setMessage({ type: "success", text: "Tugas kelompok berhasil diunggah!" });
         setGroupName("");
         setMembersInput("");
+        setAssignmentId("");
         setFile(null);
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
@@ -177,6 +212,38 @@ export default function SubmissionsPage() {
                 <span className="text-sm font-medium leading-relaxed">{message.text}</span>
               </div>
             )}
+
+            {/* Target Folder / Assignment Dropdown */}
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                <FolderOpen className="h-4 w-4 text-amber-500" />
+                Pilih Folder Tugas / Project
+              </label>
+              {assignmentsLoading ? (
+                <div className="flex items-center gap-2 h-12 px-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/40 text-slate-400 text-xs font-medium">
+                  <Loader2 className="h-4 w-4 animate-spin text-violet-500" />
+                  Memuat daftar folder tugas...
+                </div>
+              ) : assignments.length === 0 ? (
+                <div className="p-4 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/10 text-amber-800 dark:text-amber-400 text-xs font-semibold">
+                  ⚠️ Belum ada folder tugas aktif yang dibuka oleh Admin. Anda tidak dapat mengumpulkan tugas saat ini.
+                </div>
+              ) : (
+                <select
+                  value={assignmentId}
+                  onChange={(e) => setAssignmentId(e.target.value)}
+                  className="w-full h-12 px-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:ring-2 focus:ring-violet-500 focus:bg-white dark:focus:bg-slate-900 focus:border-transparent outline-none transition-all text-sm font-semibold cursor-pointer text-slate-800 dark:text-slate-200"
+                  disabled={loading}
+                >
+                  <option value="" className="text-slate-400">-- Pilih Target Folder Tugas --</option>
+                  {assignments.map((asm) => (
+                    <option key={asm.id} value={asm.id} className="text-slate-800 dark:text-slate-200">
+                      {asm.title} {asm.description ? `(${asm.description})` : ""}
+                    </option>
+                  ))}
+                </select>
+              )}
+            </div>
 
             {/* Grid for Name & Members */}
             <div className="grid md:grid-cols-2 gap-6">
@@ -301,7 +368,7 @@ export default function SubmissionsPage() {
 
             <Button
               type="submit"
-              disabled={loading}
+              disabled={loading || (assignments.length === 0 && !assignmentsLoading)}
               className="w-full h-12 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:opacity-95 text-white font-bold text-sm shadow-md shadow-violet-500/20 transition-all hover:scale-[1.01] active:scale-[0.99]"
             >
               {loading ? (
