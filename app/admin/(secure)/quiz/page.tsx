@@ -106,13 +106,13 @@ export default function AdminDashboard() {
               variant="outline" 
               onClick={async () => {
                 await fetch('/api/quiz/admin/logout', { method: 'POST' });
-                window.location.href = '/quiz/admin/login';
+                window.location.href = '/admin/quiz/login';
               }}
               className="text-slate-500 border-slate-200 hover:bg-slate-100 rounded-xl px-4 h-11"
             >
               Sign Out
             </Button>
-            <Link href="/quiz/admin/create">
+            <Link href="/admin/quiz/create">
               <Button className="bg-indigo-600 hover:bg-indigo-700 text-white gap-2 rounded-xl h-11 px-6 shadow-sm">
                 <PlusCircle className="h-5 w-5" />
                 Buat Kuis Baru
@@ -144,7 +144,7 @@ export default function AdminDashboard() {
                       Aktif
                     </div>
                     <div className="flex items-center gap-2">
-                      <Link href={`/quiz/admin/builder/${quiz.id}`} className="text-slate-300 hover:text-indigo-600 transition-colors" title="Edit Soal & Kuis">
+                      <Link href={`/admin/quiz/builder/${quiz.id}`} className="text-slate-300 hover:text-indigo-600 transition-colors" title="Edit Soal & Kuis">
                         <Pencil className="h-5 w-5" />
                       </Link>
                       <button
@@ -214,12 +214,12 @@ export default function AdminDashboard() {
                     </div>
                   </div>
                   <div className="flex gap-3">
-                    <Link href={`/quiz/admin/live/${quiz.id}`} className="flex-[2]">
+                    <Link href={`/admin/quiz/live/${quiz.id}`} className="flex-[2]">
                       <Button className="w-full rounded-2xl h-12 bg-emerald-500 text-white border-emerald-500 hover:bg-emerald-600 font-black shadow-lg shadow-emerald-500/20 transition-all">
                         <PlayCircle className="w-5 h-5 mr-2" /> LOBBY & MULAI
                       </Button>
                     </Link>
-                    <Link href={`/quiz/admin/results/${quiz.id}`} className="flex-1">
+                    <Link href={`/admin/quiz/results/${quiz.id}`} className="flex-1">
                       <Button variant="ghost" className="w-full rounded-2xl h-12 border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 bg-white shadow-sm">
                         Hasil
                       </Button>

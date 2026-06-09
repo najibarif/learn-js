@@ -5,10 +5,10 @@ export function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const adminAuth = request.cookies.get('admin_auth');
 
-  // Protect all /quiz/admin routes except /quiz/admin/login
-  if (path.startsWith('/quiz/admin') && path !== '/quiz/admin/login') {
+  // Protect all /admin routes except /admin/quiz/login
+  if (path.startsWith('/admin') && path !== '/admin/quiz/login') {
     if (!adminAuth || adminAuth.value !== 'true') {
-      return NextResponse.redirect(new URL('/quiz/admin/login', request.url));
+      return NextResponse.redirect(new URL('/admin/quiz/login', request.url));
     }
   }
 
@@ -16,5 +16,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/quiz/admin/:path*'],
+  matcher: ['/admin/:path*'],
 };

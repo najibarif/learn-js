@@ -65,7 +65,7 @@ export default function AdminMonitorPage({ params }: { params: Promise<{ id: str
       <div className="max-w-6xl mx-auto">
         <header className="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
            <div className="flex items-center gap-4">
-              <Link href="/quiz/admin" className="p-2 rounded-full hover:bg-white dark:hover:bg-slate-800 transition-all shadow-sm">
+              <Link href="/admin/quiz" className="p-2 rounded-full hover:bg-white dark:hover:bg-slate-800 transition-all shadow-sm">
                  <ArrowLeft className="w-6 h-6 text-slate-500" />
               </Link>
               <div>

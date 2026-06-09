@@ -30,7 +30,7 @@ export default function AdminLoginPage() {
         // Redirect to admin dashboard
         // Refresh router so layout correctly reads new cookie
         router.refresh();
-        router.push('/quiz/admin');
+        router.push('/admin/quiz');
       } else {
         setError(data.error || 'Password salah');
         setLoading(false);

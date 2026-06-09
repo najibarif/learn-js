@@ -26,7 +26,7 @@ export default function CreateQuizPage() {
       
       const data = await res.json();
       if (data.success && data.quiz) {
-        router.push(`/quiz/admin/builder/${data.quiz.id}`);
+        router.push(`/admin/quiz/builder/${data.quiz.id}`);
       } else {
         alert(data.error || 'Failed to create quiz');
         setLoading(false);
@@ -41,7 +41,7 @@ export default function CreateQuizPage() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 p-6 flex flex-col items-center justify-center">
       <div className="w-full max-w-xl">
-        <Link href="/quiz/admin" className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900 dark:hover:text-white mb-8 transition-colors">
+        <Link href="/admin/quiz" className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900 dark:hover:text-white mb-8 transition-colors">
           <ChevronLeft className="h-4 w-4" />
           KEMBALI KE DASHBOARD
         </Link>

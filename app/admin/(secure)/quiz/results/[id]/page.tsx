@@ -43,7 +43,7 @@ export default function AdminDetailedResults({ params }: { params: Promise<{ id:
         {/* Header Section */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-6">
           <div className="flex items-center gap-6">
-            <Link href="/quiz/admin">
+            <Link href="/admin/quiz">
                <div className="p-3 bg-white dark:bg-slate-900 rounded-2xl shadow-sm hover:shadow-md transition-shadow cursor-pointer border border-slate-100 dark:border-slate-800">
                   <ArrowLeft className="w-6 h-6 text-slate-600" />
                </div>

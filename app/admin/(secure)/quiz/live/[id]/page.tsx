@@ -75,7 +75,7 @@ export default function AdminLiveDashboard({ params }: { params: Promise<{ id: s
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col">
       <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 p-6 flex justify-between items-center sticky top-0 z-50">
         <div className="flex items-center gap-4">
-          <Link href="/quiz/admin" className="p-2 hover:bg-slate-100 rounded-full"><ArrowLeft /></Link>
+          <Link href="/admin/quiz" className="p-2 hover:bg-slate-100 rounded-full"><ArrowLeft /></Link>
           <div>
             <h1 className="text-xl font-bold">{quiz?.title}</h1>
             <div className="flex items-center gap-2">
@@ -96,7 +96,7 @@ export default function AdminLiveDashboard({ params }: { params: Promise<{ id: s
              </Button>
           ) : (
              <div className="flex items-center gap-3">
-               <Link href={`/quiz/admin/monitor/${resolvedParams.id}`} target="_blank">
+               <Link href={`/admin/quiz/monitor/${resolvedParams.id}`} target="_blank">
                   <Button className="h-12 px-6 rounded-xl font-black flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white shadow-lg shadow-violet-500/20 border-none transition-all hover:scale-105 active:scale-95">
                     <Trophy className="w-5 h-5" /> PAPAN PERINGKAT
                  </Button>

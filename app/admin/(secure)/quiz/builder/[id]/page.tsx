@@ -41,7 +41,7 @@ export default function QuizBuilder({ params }: { params: Promise<{ id: string }
           }
         }
       })
-      .catch(() => router.push('/quiz/admin'))
+      .catch(() => router.push('/admin/quiz'))
       .finally(() => setFetching(false));
   }, [resolvedParams.id, router]);
 
@@ -161,7 +161,7 @@ export default function QuizBuilder({ params }: { params: Promise<{ id: string }
     <div className="min-h-screen bg-slate-100 dark:bg-slate-950">
       <header className="sticky top-0 z-50 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Link href="/quiz/admin" className="p-2 -ml-2 rounded-full hover:bg-slate-100"><ArrowLeft className="w-5 h-5" /></Link>
+          <Link href="/admin/quiz" className="p-2 -ml-2 rounded-full hover:bg-slate-100"><ArrowLeft className="w-5 h-5" /></Link>
           <h1 className="font-bold text-slate-800 dark:text-slate-100">{quizDetails?.title}</h1>
         </div>
         <Button onClick={handleSave} disabled={loading} className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl gap-2 font-bold px-8 shadow-lg shadow-indigo-500/20">
@@ -566,7 +566,7 @@ export default function QuizBuilder({ params }: { params: Promise<{ id: string }
               </p>
               <div className="flex flex-col gap-3">
                 <Button 
-                  onClick={() => router.push('/quiz/admin')}
+                  onClick={() => router.push('/admin/quiz')}
                   className="h-16 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-black text-lg gap-2 shadow-xl shadow-indigo-600/20"
                 >
                    Ke Dashboard
