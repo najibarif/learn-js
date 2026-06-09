@@ -102,20 +102,28 @@ export default function AdminDashboard() {
             <p className="text-slate-500 mt-1">Kelola kuis, lihat hasil, dan pantau aktivitas siswa.</p>
           </div>
           <div className="flex items-center gap-3">
+            <Link href="/admin/submissions">
+              <Button 
+                variant="outline" 
+                className="text-indigo-600 border-indigo-200 dark:border-indigo-900/50 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 rounded-xl px-4 h-11 font-bold text-xs"
+              >
+                TUGAS ADMIN
+              </Button>
+            </Link>
             <Button 
               variant="outline" 
               onClick={async () => {
                 await fetch('/api/quiz/admin/logout', { method: 'POST' });
                 window.location.href = '/admin/quiz/login';
               }}
-              className="text-slate-500 border-slate-200 hover:bg-slate-100 rounded-xl px-4 h-11"
+              className="text-slate-500 border-slate-200 hover:bg-slate-100 rounded-xl px-4 h-11 text-xs font-bold"
             >
-              Sign Out
+              SIGN OUT
             </Button>
             <Link href="/admin/quiz/create">
-              <Button className="bg-indigo-600 hover:bg-indigo-700 text-white gap-2 rounded-xl h-11 px-6 shadow-sm">
-                <PlusCircle className="h-5 w-5" />
-                Buat Kuis Baru
+              <Button className="bg-indigo-600 hover:bg-indigo-700 text-white gap-2 rounded-xl h-11 px-6 shadow-sm text-xs font-bold">
+                <PlusCircle className="h-4 w-4" />
+                BUAT KUIS BARU
               </Button>
             </Link>
           </div>

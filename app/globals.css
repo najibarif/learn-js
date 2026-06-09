@@ -125,4 +125,7 @@
   html, body {
     scroll-behavior: smooth !important;
   }
+  select, option, input, textarea, button {
+    font-family: var(--font-sans), system-ui, -apple-system, sans-serif !important;
+  }
 }
