@@ -9,7 +9,7 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'LearnJS — Belajar JavaScript Interaktif',
+  title: 'LearnJS - Belajar JavaScript Interaktif',
   description: 'Platform interaktif belajar JavaScript: Pengenalan, Variabel, Percabangan, Perulangan, Function, dan DOM.',
 }
 
