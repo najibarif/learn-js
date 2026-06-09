@@ -82,6 +82,7 @@ export default function Home() {
               <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600 dark:text-slate-300">
                 <a href="#fitur" className="hover:text-violet-500 transition-colors">Fitur</a>
                 <a href="#kurikulum" className="hover:text-violet-500 transition-colors">Kurikulum</a>
+                <Link href="/submissions" className="hover:text-violet-500 transition-colors font-semibold text-violet-600 dark:text-violet-400">Kumpul Tugas</Link>
                 <Link href="/quiz" className="hover:text-violet-500 transition-colors">Kuis</Link>
               </nav>
               <div className="h-5 w-[1px] bg-slate-200 dark:bg-slate-800 hidden md:block" />
@@ -283,6 +284,7 @@ export default function Home() {
             <div className="flex flex-wrap justify-center gap-6 text-sm text-slate-500 dark:text-slate-400">
               <a href="#fitur" className="hover:text-violet-500 transition-colors">Tentang Kami</a>
               <a href="#kurikulum" className="hover:text-violet-500 transition-colors">Kurikulum</a>
+              <Link href="/submissions" className="hover:text-violet-500 transition-colors font-bold text-violet-600">Kumpul Tugas Kelompok</Link>
               <Link href="/quiz" className="hover:text-violet-500 transition-colors font-bold text-indigo-500">Ikut Kuis Interaktif</Link>
             </div>
             <p className="text-slate-400 dark:text-slate-500 text-xs">
