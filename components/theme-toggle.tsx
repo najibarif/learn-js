@@ -9,18 +9,17 @@ export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
-  if (!mounted) return <div className="w-9 h-9" />;
+  if (!mounted) return <div className="w-7 h-7" />;
 
   const isDark = resolvedTheme === "dark";
 
   return (
     <button
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="w-9 h-9 rounded-xl flex items-center justify-center border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all shadow-sm"
+      className="w-7 h-7 rounded flex items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors cursor-pointer"
       aria-label="Toggle theme"
-      title={isDark ? "Ganti ke mode terang" : "Ganti ke mode gelap"}
     >
-      {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+      {isDark ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
     </button>
   );
 }

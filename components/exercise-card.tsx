@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { InteractiveCodeEditor } from "./interactive-code-editor";
 import { CheckCircle2, XCircle } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 interface ExerciseProps {
@@ -27,118 +27,110 @@ export function ExerciseCard({
   const [result, setResult] = useState<"idle" | "correct" | "incorrect">("idle");
 
   const checkAnswer = (outputs: string[], code: string, hasError: boolean) => {
-    // 1. If code had a syntax/runtime error, or if user hasn't replaced "???"
     if (hasError || code.includes("???") || outputs.some((o) => o.includes("???"))) {
       setResult("incorrect");
       return;
     }
-
-    // 2. If no expected outputs, mark as correct since they wrote valid code and changed "???"
     if (expectedOutputs.length === 0) {
       setResult("correct");
       return;
     }
-
-    // 3. Otherwise, check against expected outputs
     const normalizedExpected = expectedOutputs.map((o) => o.trim().toLowerCase());
     const normalizedUser = outputs.map((o) => o.trim().toLowerCase());
-
     const allMatch = normalizedExpected.every((exp) =>
       normalizedUser.some((user) => user.includes(exp) || exp.includes(user))
     );
     const lengthOk = normalizedUser.length >= normalizedExpected.length;
-
     setResult(allMatch && lengthOk ? "correct" : "incorrect");
   };
 
   return (
-    <Card
-      className={cn(
-        "border-2 transition-colors",
-        result === "correct"
-          ? "border-green-400 dark:border-green-600 bg-green-50/50 dark:bg-green-950/20"
-          : result === "incorrect"
-          ? "border-red-300 dark:border-red-700 bg-red-50/30 dark:bg-red-950/20"
-          : "border-slate-200 dark:border-slate-700"
-      )}
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ type: "spring", stiffness: 100, damping: 20 }}
     >
-      <CardHeader className="pb-3">
-        <CardTitle className="flex items-start gap-3">
-          <div
-            className={cn(
-              "w-10 h-10 rounded-full flex items-center justify-center font-bold text-white shrink-0",
-              result === "correct"
-                ? "bg-green-500"
-                : result === "incorrect"
-                ? "bg-red-500"
-                : "bg-blue-600"
-            )}
-          >
-            {result === "correct" ? (
-              <CheckCircle2 className="h-5 w-5" />
-            ) : result === "incorrect" ? (
-              <XCircle className="h-5 w-5" />
-            ) : (
-              number
-            )}
+      <div className={cn(
+        "border rounded-lg transition-all duration-300",
+        result === "correct"
+          ? "border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900"
+          : result === "incorrect"
+          ? "border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/30"
+          : "border-slate-200 dark:border-slate-700"
+      )}>
+        <div className="p-6 pb-0">
+          <div className="flex items-start gap-4">
+            <motion.div
+              animate={result === "correct" ? { scale: [1, 1.2, 1], rotate: [0, 360, 0] } : result === "incorrect" ? { x: [0, -5, 5, -5, 5, 0] } : {}}
+              transition={{ duration: result === "correct" ? 0.6 : 0.5, type: "spring" }}
+              className={cn(
+                "w-11 h-11 rounded-full flex items-center justify-center font-bold text-white shrink-0",
+                result === "correct" ? "bg-slate-500" : result === "incorrect" ? "bg-slate-400" : "bg-slate-600"
+              )}
+            >
+              {result === "correct" ? <CheckCircle2 className="h-5 w-5" /> : result === "incorrect" ? <XCircle className="h-5 w-5" /> : number}
+            </motion.div>
+            <div>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">{title}</h3>
+              <p className="text-base text-slate-500 dark:text-slate-400 font-normal mt-1">{description}</p>
+            </div>
           </div>
-          <div>
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white">{title}</h3>
-            <p className="text-sm text-slate-500 dark:text-slate-400 font-normal mt-1">{description}</p>
-          </div>
-        </CardTitle>
-      </CardHeader>
+        </div>
 
-      <CardContent className="space-y-4">
-        {/* Task */}
-        <div className="p-4 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800">
-          <p className="text-sm font-medium text-blue-900 dark:text-blue-200">
+      <div className="p-6 space-y-4">
+        <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700">
+          <p className="text-base font-medium text-slate-700 dark:text-slate-300">
             <strong>Tugas:</strong> {task}
           </p>
         </div>
 
-        {/* Code Editor */}
         <InteractiveCodeEditor initialCode={initialCode} onRun={checkAnswer} />
 
-        {/* Expected Output */}
         {expectedOutputs.length > 0 && (
           <div className="p-4 bg-slate-100 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700">
-            <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-              Output yang diharapkan:
-            </p>
+            <p className="text-base font-medium text-slate-700 dark:text-slate-300 mb-2">Output yang diharapkan:</p>
             <div className="bg-slate-900 dark:bg-slate-950 rounded p-3 font-mono text-sm text-slate-300">
-              {expectedOutputs.map((output, i) => (
-                <div key={i}>{output}</div>
-              ))}
+              {expectedOutputs.map((output, i) => <div key={i}>{output}</div>)}
             </div>
           </div>
         )}
 
-        {/* Result Message */}
-        {result === "correct" && (
-          <div className="p-4 bg-green-100 dark:bg-green-950/40 rounded-lg border border-green-300 dark:border-green-700 flex items-center gap-3">
-            <CheckCircle2 className="h-6 w-6 text-green-600 dark:text-green-400 flex-shrink-0" />
-            <div>
-              <p className="font-bold text-green-800 dark:text-green-300">Benar! 🎉</p>
-              <p className="text-sm text-green-700 dark:text-green-400">
-                Kode kamu sudah benar. Lanjut ke soal berikutnya!
-              </p>
-            </div>
-          </div>
-        )}
+        <AnimatePresence>
+          {result === "correct" && (
+            <motion.div initial={{ opacity: 0, scale: 0.8, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.8, y: -20 }} transition={{ type: "spring", stiffness: 200, damping: 18 }}
+              className="p-4 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center gap-3">
+              <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 0.6, repeat: Infinity, repeatDelay: 2, type: "spring" }}>
+                <CheckCircle2 className="h-6 w-6 text-slate-500 dark:text-slate-400 flex-shrink-0" />
+              </motion.div>
+              <div>
+                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
+                  className="font-bold text-slate-900 dark:text-slate-100">Benar!</motion.p>
+                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
+                  className="text-base text-slate-600 dark:text-slate-400">Kode kamu sudah benar. Lanjut ke soal berikutnya!</motion.p>
+              </div>
+            </motion.div>
+          )}
 
-        {result === "incorrect" && (
-          <div className="p-4 bg-red-100 dark:bg-red-950/40 rounded-lg border border-red-300 dark:border-red-700 flex items-center gap-3">
-            <XCircle className="h-6 w-6 text-red-600 dark:text-red-400 flex-shrink-0" />
-            <div>
-              <p className="font-bold text-red-800 dark:text-red-300">Belum Tepat</p>
-              <p className="text-sm text-red-700 dark:text-red-400">
-                Coba periksa lagi kode kamu. Bandingkan outputmu dengan output yang diharapkan!
-              </p>
-            </div>
-          </div>
-        )}
-      </CardContent>
-    </Card>
+          {result === "incorrect" && (
+            <motion.div initial={{ opacity: 0, scale: 0.8, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.8, y: -20 }} transition={{ type: "spring", stiffness: 200, damping: 18 }}
+              className="p-4 bg-slate-100 dark:bg-slate-800/50 rounded-lg border border-slate-300 dark:border-slate-600 flex items-center gap-3">
+              <motion.div animate={{ rotate: [0, -10, 10, -10, 10, 0] }} transition={{ duration: 0.5, type: "spring" }}>
+                <XCircle className="h-6 w-6 text-slate-500 dark:text-slate-400 flex-shrink-0" />
+              </motion.div>
+              <div>
+                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
+                  className="font-bold text-slate-800 dark:text-slate-200">Belum Tepat</motion.p>
+                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
+                  className="text-base text-slate-600 dark:text-slate-400">Coba periksa lagi kode kamu. Bandingkan outputmu dengan output yang diharapkan!</motion.p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+    </motion.div>
   );
 }

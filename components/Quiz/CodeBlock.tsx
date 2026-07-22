@@ -10,20 +10,18 @@ interface CodeBlockProps {
 
 export default function CodeBlock({ code, language = 'javascript' }: CodeBlockProps) {
   return (
-    <div className="my-6 rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-[#1e1e1e]">
-      {/* VS Code Header */}
-      <div className="bg-[#252526] px-4 py-2 flex items-center gap-2 border-b border-black/20">
+    <div className="my-6 rounded-2xl overflow-hidden border border-slate-700/50 shadow-2xl bg-slate-900 dark:bg-slate-950">
+      <div className="bg-slate-800 dark:bg-slate-900 px-4 py-2 flex items-center gap-2 border-b border-black/20">
          <div className="flex gap-1.5 mr-2">
-            <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
-            <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
-            <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
+            <div className="w-3 h-3 rounded-full bg-slate-600" />
+            <div className="w-3 h-3 rounded-full bg-slate-500" />
+            <div className="w-3 h-3 rounded-full bg-slate-400" />
          </div>
-         <div className="bg-[#1e1e1e] px-4 py-1.5 rounded-t-lg border-t border-x border-white/5">
-            <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Untitled-1</span>
+         <div className="bg-slate-900 dark:bg-slate-950 px-4 py-1.5 rounded-t-lg border-t border-x border-slate-700/50">
+            <span className="text-[10px] font-bold text-teal-400 uppercase tracking-widest">Untitled-1</span>
          </div>
       </div>
       
-      {/* Code Content */}
       <div className="p-4 text-lg">
         <SyntaxHighlighter 
           language={language} 

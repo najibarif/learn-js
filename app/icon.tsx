@@ -1,51 +1,55 @@
-import { ImageResponse } from 'next/og';
+import { ImageResponse } from "next/og";
 
-export const runtime = 'edge';
+export const runtime = "edge";
 
-// Image metadata
 export const size = {
   width: 32,
   height: 32,
 };
-export const contentType = 'image/png';
 
-// Image generation
+export const contentType = "image/png";
+
 export default function Icon() {
   return new ImageResponse(
     (
-      // ImageResponse JSX element
       <div
         style={{
-          background: 'linear-gradient(to bottom right, #8b5cf6, #7c3aed)',
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'white',
-          borderRadius: '25%',
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "transparent",
         }}
       >
-        {/* SVG representing Lucide's Code icon */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="3"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+        <div
+          style={{
+            width: 28,
+            height: 28,
+            borderRadius: 8, // lebih membulat
+            background: "#64748B", // slate-500
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
         >
-          <polyline points="16 18 22 12 16 6" />
-          <polyline points="8 6 2 12 8 18" />
-        </svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#ffffff"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polyline points="16 18 22 12 16 6" />
+            <polyline points="8 6 2 12 8 18" />
+          </svg>
+        </div>
       </div>
     ),
-    // ImageResponse options
-    {
-      ...size,
-    }
+    size
   );
 }

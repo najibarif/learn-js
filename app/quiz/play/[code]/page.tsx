@@ -275,11 +275,11 @@ export default function QuizPlayerPage({ params }: { params: Promise<{ code: str
     }
   };
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-slate-950 text-indigo-500"><Loader2 className="animate-spin w-12 h-12" /></div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center bg-slate-950 text-slate-500"><Loader2 className="animate-spin w-12 h-12" /></div>;
 
   if (isLobby) {
     return (
-      <div className="min-h-screen bg-indigo-600 flex items-center justify-center p-6 relative overflow-hidden">
+      <div className="min-h-screen bg-slate-600 flex items-center justify-center p-6 relative overflow-hidden">
         <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="bg-white rounded-[4rem] shadow-2xl max-w-2xl w-full p-8 md:p-12 relative z-10">
           <div className="text-center mb-10">
             <h1 className="text-4xl md:text-5xl font-black text-slate-800 mb-4">{quiz?.title}</h1>
@@ -290,22 +290,22 @@ export default function QuizPlayerPage({ params }: { params: Promise<{ code: str
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
              <div className="bg-white/50 backdrop-blur-sm p-6 rounded-[2.5rem] border-2 border-slate-100 flex flex-col gap-4 shadow-sm">
-                <div className="w-14 h-14 bg-amber-100 rounded-2xl flex items-center justify-center">
-                   <Zap className="w-8 h-8 text-amber-500" />
+                <div className="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center">
+                   <Zap className="w-8 h-8 text-slate-500" />
                 </div>
                 <div>
                    <h3 className="font-black text-slate-800 text-lg italic uppercase tracking-tight">Bonus Cepat</h3>
-                   <p className="text-sm text-slate-500 leading-relaxed">Makin <span className="font-bold text-amber-600">cepat jawabnya</span>, makin melimpah poin tambahannya!</p>
+                   <p className="text-sm text-slate-500 leading-relaxed">Makin <span className="font-bold text-slate-600">cepat jawabnya</span>, makin melimpah poin tambahannya!</p>
                 </div>
              </div>
 
              <div className="bg-white/50 backdrop-blur-sm p-6 rounded-[2.5rem] border-2 border-slate-100 flex flex-col gap-4 shadow-sm">
-                <div className="w-14 h-14 bg-indigo-100 rounded-2xl flex items-center justify-center">
-                   <Trophy className="w-8 h-8 text-indigo-500" />
+                <div className="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center">
+                   <Trophy className="w-8 h-8 text-slate-500" />
                 </div>
                 <div>
                    <h3 className="font-black text-slate-800 text-lg italic uppercase tracking-tight">Menang Terus</h3>
-                   <p className="text-sm text-slate-500 leading-relaxed">Jawab benar berturut-turut buat <span className="font-bold text-indigo-600">lipat gandakan</span> skormu!</p>
+                   <p className="text-sm text-slate-500 leading-relaxed">Jawab benar berturut-turut buat <span className="font-bold text-slate-600">lipat gandakan</span> skormu!</p>
                 </div>
              </div>
 
@@ -315,7 +315,7 @@ export default function QuizPlayerPage({ params }: { params: Promise<{ code: str
                 </div>
                 <div>
                    <h3 className="font-black text-slate-800 text-lg italic uppercase tracking-tight">Poin Pasti</h3>
-                   <p className="text-sm text-slate-500 leading-relaxed">Setiap jawaban benar pasti dapet <span className="font-bold text-emerald-600">poin besar</span> sebagai modalmu.</p>
+                   <p className="text-sm text-slate-500 leading-relaxed">Setiap jawaban benar pasti dapet <span className="font-bold text-slate-600">poin besar</span> sebagai modalmu.</p>
                 </div>
              </div>
 
@@ -325,7 +325,7 @@ export default function QuizPlayerPage({ params }: { params: Promise<{ code: str
                 </div>
                 <div>
                    <h3 className="font-black text-slate-800 text-lg italic uppercase tracking-tight">Aman & Santai</h3>
-                   <p className="text-sm text-slate-500 leading-relaxed">Jangan takut salah! Jawaban salah <span className="font-bold text-rose-600">nggak akan ngurangin</span> skormu.</p>
+                   <p className="text-sm text-slate-500 leading-relaxed">Jangan takut salah! Jawaban salah <span className="font-bold text-slate-500">nggak akan ngurangin</span> skormu.</p>
                 </div>
              </div>
           </div>
@@ -333,7 +333,7 @@ export default function QuizPlayerPage({ params }: { params: Promise<{ code: str
             <div className="text-center py-8">
                <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6"><CheckCircle2 className="w-10 h-10" /></div>
                <h2 className="text-2xl font-black text-slate-800 mb-6 italic">Kamu Sudah Siap!</h2>
-               <div className="w-32 h-32 mx-auto mb-6 bg-slate-50 rounded-full p-2 border-4 border-indigo-600"><img src={selectedAvatar} alt="Avatar" className="w-full h-full object-contain" /></div>
+               <div className="w-32 h-32 mx-auto mb-6 bg-slate-50 rounded-full p-2 border-4 border-slate-600"><img src={selectedAvatar} alt="Avatar" className="w-full h-full object-contain" /></div>
                <p className="text-slate-400 font-bold animate-pulse text-xs uppercase tracking-widest">Menunggu Admin Memulai...</p>
             </div>
           ) : (
@@ -342,11 +342,11 @@ export default function QuizPlayerPage({ params }: { params: Promise<{ code: str
                    <p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-6 text-center">Pilih Karaktermu</p>
                    <div className="grid grid-cols-4 gap-6">
                       {AVATAR_LIST.map(ava => (
-                        <button key={ava.name} onClick={() => setSelectedAvatar(ava.url)} className={`aspect-square p-2 rounded-[2rem] transition-all flex items-center justify-center ${selectedAvatar === ava.url ? 'bg-indigo-600 shadow-xl scale-110' : 'bg-slate-100'}`}><img src={ava.url} alt={ava.name} className="w-full h-full object-contain" /></button>
+                        <button key={ava.name} onClick={() => setSelectedAvatar(ava.url)} className={`aspect-square p-2 rounded-[2rem] transition-all flex items-center justify-center ${selectedAvatar === ava.url ? 'bg-slate-600 shadow-xl scale-110' : 'bg-slate-100'}`}><img src={ava.url} alt={ava.name} className="w-full h-full object-contain" /></button>
                       ))}
                    </div>
                 </div>
-                <button onClick={handleSetReady} className="w-full h-20 rounded-[2.5rem] bg-indigo-600 border-b-8 border-indigo-800 text-white font-black text-2xl flex items-center justify-center gap-4 transition-all hover:scale-105 active:translate-y-2 active:border-b-0 shadow-xl shadow-indigo-600/30">MULAI BERTANDING! <ArrowRight className="w-8 h-8" /></button>
+                 <button onClick={handleSetReady} className="w-full h-20 rounded-[2.5rem] bg-slate-600 border-b-8 border-slate-700 text-white font-black text-2xl flex items-center justify-center gap-4 transition-all hover:scale-105 active:translate-y-2 active:border-b-0 shadow-xl shadow-slate-600/30">MULAI BERTANDING! <ArrowRight className="w-8 h-8" /></button>
              </div>
           )}
         </motion.div>
@@ -363,13 +363,13 @@ export default function QuizPlayerPage({ params }: { params: Promise<{ code: str
               <Trophy className="w-16 h-16 text-amber-400 mx-auto mb-4" />
               <h1 className="text-5xl font-black text-slate-800 mb-2 uppercase italic tracking-tighter">KERJA BAGUS!</h1>
               <div className="grid grid-cols-2 gap-4 my-8">
-                 <div className="bg-indigo-50 p-6 rounded-3xl"><p className="text-[10px] font-black text-indigo-400 uppercase mb-1">Total Poin</p><p className="text-3xl font-black text-indigo-600">{score}</p></div>
-                 <div className="bg-emerald-50 p-6 rounded-3xl"><p className="text-[10px] font-black text-emerald-400 uppercase mb-1">Akurasi</p><p className="text-3xl font-black text-emerald-600">{resultAnalysis?.accuracy || 0}%</p></div>
+                 <div className="bg-slate-50 p-6 rounded-3xl"><p className="text-[10px] font-black text-slate-400 uppercase mb-1">Total Poin</p><p className="text-3xl font-black text-slate-600">{score}</p></div>
+                  <div className="bg-slate-50 p-6 rounded-3xl"><p className="text-[10px] font-black text-slate-400 uppercase mb-1">Akurasi</p><p className="text-3xl font-black text-slate-600">{resultAnalysis?.accuracy || 0}%</p></div>
               </div>
               <div className="flex flex-col sm:flex-row gap-3 mt-2">
                  <Button 
                    onClick={() => router.push(`/quiz/my-result/${attemptId}`)} 
-                   className="flex-1 h-14 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-base rounded-2xl gap-2 shadow-lg shadow-indigo-500/20"
+                    className="flex-1 h-14 bg-slate-600 hover:bg-slate-500 text-white font-black text-base rounded-2xl gap-2"
                  >
                    Lihat Hasil Saya
                  </Button>
@@ -382,11 +382,11 @@ export default function QuizPlayerPage({ params }: { params: Promise<{ code: str
               </div>
            </motion.div>
            {resultAnalysis?.leaderboard && (
-             <div className="bg-indigo-600 rounded-[3rem] p-8 shadow-2xl mb-12 text-white">
+             <div className="bg-slate-600 rounded-[3rem] p-8 shadow-2xl mb-12 text-white">
                 <div className="flex items-center gap-4 mb-8"><Trophy className="w-8 h-8 text-amber-300"/><h2 className="text-2xl font-black uppercase italic">Leaderboard Teratas</h2></div>
                 <div className="space-y-3">
                    {resultAnalysis.leaderboard.map((player: any, pIdx: number) => (
-                     <div key={pIdx} className={`flex items-center justify-between p-4 rounded-[1.5rem] ${player.isCurrent ? 'bg-white text-indigo-600 scale-[1.02]' : 'bg-white/10'}`}>
+                      <div key={pIdx} className={`flex items-center justify-between p-4 rounded-[1.5rem] ${player.isCurrent ? 'bg-white text-slate-600 scale-[1.02]' : 'bg-white/10'}`}>
                         <div className="flex items-center gap-4">
                            <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center font-black text-sm shrink-0">{pIdx + 1}</div>
                            <div className="w-10 h-10 bg-white/20 rounded-xl p-1 shrink-0 overflow-hidden">
@@ -443,8 +443,8 @@ export default function QuizPlayerPage({ params }: { params: Promise<{ code: str
 
       {/* Decorative background elements & High-Streak Aura */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20">
-         <div className={`absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full blur-[120px] transition-colors duration-1000 ${streak >= 10 ? 'bg-cyan-500' : 'bg-indigo-500'}`} />
-         <div className={`absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full blur-[120px] transition-colors duration-1000 ${streak >= 10 ? 'bg-teal-500' : 'bg-purple-500'}`} />
+         <div className={`absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full blur-[120px] transition-colors duration-1000 ${streak >= 10 ? 'bg-cyan-500' : 'bg-slate-500'}`} />
+         <div className={`absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full blur-[120px] transition-colors duration-1000 ${streak >= 10 ? 'bg-teal-500' : 'bg-slate-400'}`} />
          
          {streak >= 5 && (
             <motion.div 
@@ -488,9 +488,9 @@ export default function QuizPlayerPage({ params }: { params: Promise<{ code: str
 
             <div className="hidden md:flex bg-white px-6 py-4 rounded-[2rem] font-black items-center gap-4 shadow-xl">
                <span className="text-slate-400 text-sm">SOAL {currentIdx + 1}/{questions.length}</span>
-               <div className={`w-24 md:w-32 h-3 rounded-full overflow-hidden transition-all duration-500 ${streak >= 10 ? 'bg-cyan-200' : streak >= 3 ? 'bg-orange-200' : 'bg-slate-100'}`}>
-                  <motion.div 
-                    className={`h-full ${streak >= 10 ? 'bg-gradient-to-r from-cyan-500 to-blue-600' : streak >= 3 ? 'bg-gradient-to-r from-orange-500 to-red-500' : 'bg-indigo-600'}`} 
+                   <div className={`w-24 md:w-32 h-3 rounded-full overflow-hidden transition-all duration-500 ${streak >= 10 ? 'bg-cyan-200' : streak >= 3 ? 'bg-orange-200' : 'bg-slate-100'}`}>
+                   <motion.div 
+                     className={`h-full ${streak >= 10 ? 'bg-gradient-to-r from-cyan-500 to-blue-600' : streak >= 3 ? 'bg-gradient-to-r from-orange-500 to-red-500' : 'bg-slate-600'}`} 
                     initial={{ width: 0 }} 
                     animate={{ width: `${((currentIdx + 1) / questions.length) * 100}%` }} 
                     transition={{ type: "spring", stiffness: 50 }} 
@@ -529,7 +529,7 @@ export default function QuizPlayerPage({ params }: { params: Promise<{ code: str
       <main className="flex-1 w-full max-w-4xl p-6 flex flex-col justify-center relative z-10">
         <div className="flex justify-center mb-6">
            <div className="bg-white/10 backdrop-blur-md px-6 py-2 rounded-full border border-white/10 flex items-center gap-3 text-white/60">
-              <div className={`w-2 h-2 rounded-full animate-pulse ${streak >= 10 ? 'bg-cyan-400' : 'bg-indigo-400'}`} />
+              <div className={`w-2 h-2 rounded-full animate-pulse ${streak >= 10 ? 'bg-cyan-400' : 'bg-slate-400'}`} />
               <span className="text-[10px] font-black uppercase tracking-[0.2em]">
                  {currentQ.type === 'mcq' && "Pilih satu jawaban terbaik"}
                  {currentQ.type === 'boolean' && "Pilih Benar atau Salah"}
@@ -640,7 +640,7 @@ export default function QuizPlayerPage({ params }: { params: Promise<{ code: str
            else if (type === 'match') canSubmit = Array.isArray(data) && data.length === (currentQ.metadata?.pairs?.length || 0);
            if (!isShowingPollResults && !['multi_select', 'fill_in_the_blank', 'drag_drop', 'match'].includes(type)) return null;
            return (
-            <button disabled={!canSubmit} onClick={() => isShowingPollResults ? handleNextQuestion() : handleAnswer(null)} className={`mt-6 md:mt-10 w-full h-16 md:h-20 rounded-2xl md:rounded-3xl text-white font-black text-lg md:text-2xl transition-all shadow-xl ${canSubmit ? 'bg-indigo-600 border-b-4 md:border-b-8 border-indigo-800 hover:bg-indigo-700 active:translate-y-1 md:active:translate-y-2 active:border-b-0 shadow-indigo-600/30' : 'bg-slate-800 opacity-50 cursor-not-allowed'}`}>
+            <button disabled={!canSubmit} onClick={() => isShowingPollResults ? handleNextQuestion() : handleAnswer(null)} className={`mt-6 md:mt-10 w-full h-16 md:h-20 rounded-2xl md:rounded-3xl text-white font-black text-lg md:text-2xl transition-all shadow-xl ${canSubmit ? 'bg-slate-600 border-b-4 md:border-b-8 border-slate-700 hover:bg-slate-700 active:translate-y-1 md:active:translate-y-2 active:border-b-0 shadow-slate-600/30' : 'bg-slate-800 opacity-50 cursor-not-allowed'}`}>
               {isShowingPollResults ? "LANJUTKAN" : "KIRIM JAWABAN"}
             </button>
            );

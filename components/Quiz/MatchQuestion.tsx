@@ -26,7 +26,6 @@ export default function MatchQuestion({ question, onAnswer, onUpdate, hideText }
   const [matches, setMatches] = useState<Array<{ leftId: string, rightId: string }>>([]);
 
   const handleLeftClick = (id: string) => {
-    // If already matched, remove it
     if (matches.some(m => m.leftId === id)) {
       const newMatches = matches.filter(m => m.leftId !== id);
       setMatches(newMatches);
@@ -38,7 +37,6 @@ export default function MatchQuestion({ question, onAnswer, onUpdate, hideText }
 
   const handleRightClick = (id: string) => {
     if (!selectedLeft) return;
-    
     const newMatches = [...matches.filter(m => m.rightId !== id), { leftId: selectedLeft, rightId: id }];
     setMatches(newMatches);
     setSelectedLeft(null);
@@ -46,19 +44,17 @@ export default function MatchQuestion({ question, onAnswer, onUpdate, hideText }
   };
 
   const COLORS = [
-    { bg: 'bg-emerald-500', border: 'border-emerald-400', text: 'text-emerald-300' },
-    { bg: 'bg-rose-500', border: 'border-rose-400', text: 'text-rose-300' },
-    { bg: 'bg-amber-500', border: 'border-amber-400', text: 'text-amber-300' },
-    { bg: 'bg-sky-500', border: 'border-sky-400', text: 'text-sky-300' },
-    { bg: 'bg-fuchsia-500', border: 'border-fuchsia-400', text: 'text-fuchsia-300' },
-    { bg: 'bg-indigo-500', border: 'border-indigo-400', text: 'text-indigo-300' },
+    { bg: 'bg-slate-700 dark:bg-slate-600', border: 'border-slate-500 dark:border-slate-500', text: 'text-slate-300' },
+    { bg: 'bg-amber-600', border: 'border-amber-500', text: 'text-amber-200' },
+    { bg: 'bg-slate-800 dark:bg-slate-500', border: 'border-slate-600 dark:border-slate-400', text: 'text-slate-200' },
+    { bg: 'bg-amber-500', border: 'border-amber-400', text: 'text-amber-100' },
+    { bg: 'bg-slate-600 dark:bg-slate-700', border: 'border-slate-500 dark:border-slate-600', text: 'text-slate-200' },
+    { bg: 'bg-amber-700', border: 'border-amber-600', text: 'text-amber-100' },
   ];
 
   return (
     <div className="w-full flex flex-col gap-10">
-      
       <div className="flex gap-2 md:gap-10 justify-center">
-        {/* Left Column */}
         <div className="flex flex-col gap-3 flex-1 max-w-[250px]">
           {leftItems.map((item: any) => {
             const matchIndex = matches.findIndex(m => m.leftId === item.id);
@@ -75,8 +71,8 @@ export default function MatchQuestion({ question, onAnswer, onUpdate, hideText }
                   match && color
                     ? `${color.bg} ${color.border} text-white` 
                     : isSelected 
-                      ? 'bg-white border-white text-indigo-600 scale-105 ring-4 ring-white/50' 
-                      : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
+                      ? 'bg-white dark:bg-slate-100 border-white dark:border-slate-100 text-slate-900 scale-105 ring-4 ring-teal-400/50' 
+                      : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700'
                 }`}
               >
                 <span className="text-left leading-tight break-words">{item.text}</span>
@@ -86,12 +82,10 @@ export default function MatchQuestion({ question, onAnswer, onUpdate, hideText }
           })}
         </div>
 
-        {/* Connections Indicator */}
-        <div className="flex flex-col justify-center text-white/20">
+        <div className="flex flex-col justify-center text-slate-300 dark:text-slate-600">
            <Link2 className="w-10 h-10 md:w-12 md:h-12" />
         </div>
 
-        {/* Right Column */}
         <div className="flex flex-col gap-3 flex-1 max-w-[250px]">
           {rightItems.map((item: any) => {
             const matchIndex = matches.findIndex(m => m.rightId === item.id);
@@ -107,8 +101,8 @@ export default function MatchQuestion({ question, onAnswer, onUpdate, hideText }
                   match && color
                     ? `${color.bg} ${color.border} text-white` 
                     : selectedLeft 
-                      ? 'bg-white/5 border-white/10 text-white border-dashed animate-pulse ring-2 ring-white/20 hover:bg-white/20' 
-                      : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
+                      ? 'bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-500 border-dashed animate-pulse ring-2 ring-slate-300 dark:ring-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700' 
+                      : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700'
                 }`}
               >
                 <span className="text-left leading-tight break-words">{item.text}</span>
@@ -119,7 +113,6 @@ export default function MatchQuestion({ question, onAnswer, onUpdate, hideText }
         </div>
       </div>
 
-      {/* Summary View */}
       {matches.length > 0 && (
         <div className="mt-6 flex flex-wrap gap-2 justify-center">
           {matches.map((m, idx) => {

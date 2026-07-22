@@ -13,7 +13,6 @@ interface FillInBlankQuestionProps {
 }
 
 export default function FillInBlankQuestion({ question, onAnswer, onUpdate }: FillInBlankQuestionProps) {
-  // Store typed answers for each blank: { index: "typed text" }
   const [answers, setAnswers] = useState<Record<number, string>>({});
 
   const handleInputChange = (index: number, value: string) => {
@@ -52,7 +51,7 @@ export default function FillInBlankQuestion({ question, onAnswer, onUpdate }: Fi
                         value={answers[currentIdx] || ""}
                         onChange={(e) => handleInputChange(currentIdx, e.target.value)}
                         placeholder="..."
-                        className={`h-7 md:h-9 bg-white/10 border-b-2 border-indigo-500 rounded px-2 transition-all text-center focus:outline-none focus:border-white font-bold ${isCodeFormat ? 'w-16 md:w-20 text-indigo-400 text-sm' : 'w-32 md:w-48 text-indigo-100 text-2xl'}`}
+                        className={`h-7 md:h-9 bg-white/10 border-b-2 border-teal-500 rounded px-2 transition-all text-center focus:outline-none focus:border-white font-bold ${isCodeFormat ? 'w-16 md:w-20 text-teal-400 text-sm' : 'w-32 md:w-48 text-teal-100 text-2xl'}`}
                       />
                     </div>
                   );
@@ -99,25 +98,24 @@ export default function FillInBlankQuestion({ question, onAnswer, onUpdate }: Fi
 
   return (
     <div className="w-full flex flex-col items-center">
-      
       {question.text && renderTextParts(question.text, textIsCode)}
 
       {(hasDedicatedCode || textIsCode) && (
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`w-full max-w-4xl rounded-2xl md:rounded-[2.5rem] overflow-hidden border-2 md:border-4 border-white/10 shadow-2xl relative bg-[#1e1e1e]`}
+          className="w-full max-w-4xl rounded-2xl md:rounded-[2.5rem] overflow-hidden border-2 md:border-4 border-slate-700/50 shadow-2xl relative bg-slate-900 dark:bg-slate-950"
         >
-          <div className="bg-[#252526] px-6 py-3 flex items-center justify-between border-b border-black/20">
+          <div className="bg-slate-800 dark:bg-slate-900 px-6 py-3 flex items-center justify-between border-b border-black/20">
              <div className="flex gap-2">
-                <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
-                <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
-                <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
+                <div className="w-3 h-3 rounded-full bg-slate-600" />
+                <div className="w-3 h-3 rounded-full bg-slate-500" />
+                <div className="w-3 h-3 rounded-full bg-slate-400" />
              </div>
-             <div className="bg-[#1e1e1e] px-4 py-1.5 rounded-t-lg border-t border-x border-white/5">
-                <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Untitled-1</span>
+             <div className="bg-slate-900 dark:bg-slate-950 px-4 py-1.5 rounded-t-lg border-t border-x border-slate-700/50">
+                 <span className="text-[10px] font-bold text-teal-400 uppercase tracking-widest">Untitled-1</span>
              </div>
-             <div className="w-12" /> {/* Spacer */}
+             <div className="w-12" />
           </div>
           <div className="p-5 md:p-14">
             {question.code ? renderTextParts(question.code, true) : null}

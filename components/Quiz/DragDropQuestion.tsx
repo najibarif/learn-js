@@ -15,7 +15,6 @@ interface DragDropQuestionProps {
   hideText?: boolean;
 }
 
-// Portal component to fix dragging position issue with framer-motion
 const DraggablePortal = ({ children, draggableProps, dragHandleProps, innerRef }: any) => {
   return (
     <div ref={innerRef} {...draggableProps} {...dragHandleProps}>
@@ -30,9 +29,7 @@ export default function DragDropQuestion({ question, onAnswer, onUpdate }: DragD
     const dbTargets = question.metadata?.targets || [];
     const expectedCount = ((question.text || "") + (question.code || "")).match(/___/g)?.length || 0;
     if (dbTargets.length === expectedCount && expectedCount > 0) return dbTargets;
-    if (expectedCount === 0) return dbTargets; // No targets expected
-    
-    // Auto-generate missing targets
+    if (expectedCount === 0) return dbTargets;
     return Array.from({ length: expectedCount }, (_, i) => ({ id: `slot-${i}`, text: `Slot ${i+1}` }));
   }, [question]);
 
@@ -92,23 +89,17 @@ export default function DragDropQuestion({ question, onAnswer, onUpdate }: DragD
     const newPlacements = { ...placements };
     
     if (sourceDroppableId === 'lobby') {
-      // Find the first target that has space
       const targetId = targets.find((t: any) => newPlacements[t.id].length === 0)?.id || targets[0]?.id;
-      
       if (targetId) {
         newPlacements.lobby = newPlacements.lobby.filter(id => id !== itemId);
         newPlacements[targetId] = [...newPlacements[targetId], itemId];
       } else return;
     } else {
-      // Remove from target
       newPlacements[sourceDroppableId] = newPlacements[sourceDroppableId].filter(id => id !== itemId);
-      // Add to lobby
       newPlacements.lobby = [...newPlacements.lobby, itemId];
     }
     
     setPlacements(newPlacements);
-    
-    // Notify parent
     const finalAnswers: any[] = [];
     targets.forEach((t: any) => {
       newPlacements[t.id]?.forEach((id: string) => finalAnswers.push({ itemId: id, targetId: t.id }));
@@ -131,9 +122,9 @@ export default function DragDropQuestion({ question, onAnswer, onUpdate }: DragD
               style={{ ...provided.draggableProps.style, touchAction: 'none' }}
               className={`font-black shadow-2xl transition-all active:scale-110 whitespace-nowrap cursor-pointer select-none ${
                 isSmall 
-                   ? 'bg-indigo-600 text-white text-sm md:text-base px-3 py-2 rounded-xl' 
-                   : 'bg-white text-indigo-600 text-lg md:text-xl px-4 md:px-6 py-3 md:py-4 rounded-[1.5rem] border-b-4 md:border-b-6 border-slate-200'
-              } ${snapshot.isDragging ? 'ring-4 ring-indigo-400 opacity-90' : ''}`}
+                   ? 'bg-teal-600 dark:bg-teal-500 text-white text-sm md:text-base px-3 py-2 rounded-xl' 
+                   : 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-lg md:text-xl px-4 md:px-6 py-3 md:py-4 rounded-[1.5rem] border-b-4 md:border-b-6 border-slate-200 dark:border-slate-700'
+              } ${snapshot.isDragging ? 'ring-4 ring-teal-400 dark:ring-teal-500 opacity-90' : ''}`}
             >
               {item?.text}
             </div>
@@ -177,7 +168,7 @@ export default function DragDropQuestion({ question, onAnswer, onUpdate }: DragD
                             {...provided.droppableProps}
                             ref={provided.innerRef}
                             className={`inline-flex min-w-[70px] min-h-[45px] border-b-4 border-dashed rounded-xl align-middle transition-all shadow-inner items-center justify-center ${
-                              snapshot.isDraggingOver ? 'bg-indigo-500/30 border-white' : 'bg-black/40 border-white/20'
+                              snapshot.isDraggingOver ? 'bg-teal-500/30 border-teal-400' : 'bg-slate-800/40 border-slate-600/30'
                             }`}
                           >
                             <div className="flex flex-wrap gap-1 items-center justify-center w-full p-1">
@@ -195,7 +186,7 @@ export default function DragDropQuestion({ question, onAnswer, onUpdate }: DragD
                 if (!formattedPart && isCodeFormat) return null;
                 
                 return (
-                  <span key={idx} className={`${isCodeFormat ? 'font-mono text-indigo-400' : 'text-white drop-shadow-md font-black text-2xl md:text-4xl py-2 italic'}`}>
+                  <span key={idx} className={`${isCodeFormat ? 'font-mono text-teal-400' : 'text-white drop-shadow-md font-black text-2xl md:text-4xl py-2 italic'}`}>
                     {formattedPart}
                   </span>
                 );
@@ -210,25 +201,23 @@ export default function DragDropQuestion({ question, onAnswer, onUpdate }: DragD
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="w-full flex flex-col lg:flex-row gap-8 items-start">
-        {/* Left Side: Question & Targets */}
         <div className="flex-1 w-full flex flex-col gap-6 items-center">
-          
           {question.text && renderTextParts(question.text, textIsCode)}
 
           {(hasDedicatedCode || textIsCode) && (
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`w-full max-w-4xl rounded-2xl md:rounded-[3rem] overflow-hidden border-2 md:border-4 border-white/10 shadow-2xl relative bg-[#1e1e1e]`}
+              className="w-full max-w-4xl rounded-2xl md:rounded-[3rem] overflow-hidden border-2 md:border-4 border-slate-700/50 shadow-2xl relative bg-slate-900 dark:bg-slate-950"
             >
-              <div className="bg-[#252526] px-6 py-3 flex items-center justify-between border-b border-black/20">
+              <div className="bg-slate-800 dark:bg-slate-900 px-6 py-3 flex items-center justify-between border-b border-black/20">
                  <div className="flex gap-2">
-                    <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
-                    <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
-                    <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
+                    <div className="w-3 h-3 rounded-full bg-slate-600" />
+                    <div className="w-3 h-3 rounded-full bg-slate-500" />
+                    <div className="w-3 h-3 rounded-full bg-slate-400" />
                  </div>
-                 <div className="bg-[#1e1e1e] px-4 py-1.5 rounded-t-lg border-t border-x border-white/5">
-                    <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Untitled-1</span>
+                 <div className="bg-slate-900 dark:bg-slate-950 px-4 py-1.5 rounded-t-lg border-t border-x border-slate-700/50">
+                     <span className="text-[10px] font-bold text-teal-400 uppercase tracking-widest">Untitled-1</span>
                  </div>
                  <div className="w-12" />
               </div>
@@ -245,10 +234,10 @@ export default function DragDropQuestion({ question, onAnswer, onUpdate }: DragD
                    {(provided, snapshot) => (
                      <div {...provided.droppableProps} ref={provided.innerRef}
                        className={`min-h-[140px] rounded-[2.5rem] border-4 border-dashed p-6 transition-all ${
-                         snapshot.isDraggingOver ? 'bg-indigo-50 border-indigo-400' : 'bg-white/10 border-white/20 shadow-xl text-white'
+                         snapshot.isDraggingOver ? 'bg-teal-50 dark:bg-teal-950/20 border-teal-400' : 'bg-slate-100 dark:bg-slate-800/50 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white'
                        }`}
                      >
-                       <p className="text-[10px] font-black text-white/50 uppercase mb-4 tracking-widest">{target.text}</p>
+                       <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase mb-4 tracking-widest">{target.text}</p>
                        <div className="flex flex-wrap gap-3">
                           {placements[target.id].map((itemId, index) => renderItem(itemId, index, true, target.id))}
                        </div>
@@ -261,10 +250,9 @@ export default function DragDropQuestion({ question, onAnswer, onUpdate }: DragD
           )}
         </div>
 
-        {/* Right Side: Answer Options (Lobby) */}
         <div className="w-full lg:w-[320px] shrink-0 sticky top-24">
-          <div className="flex flex-col gap-4 md:gap-6 bg-white/20 backdrop-blur-2xl p-4 md:p-8 rounded-2xl md:rounded-[3.5rem] border border-white/30 shadow-2xl min-h-[150px] md:min-h-[300px]">
-            <p className="text-center text-[10px] font-black text-white/70 uppercase tracking-[0.3em]">Pilihan Jawaban</p>
+          <div className="flex flex-col gap-4 md:gap-6 bg-slate-100 dark:bg-slate-800/50 backdrop-blur-2xl p-4 md:p-8 rounded-2xl md:rounded-[3.5rem] border border-slate-200 dark:border-slate-700 shadow-2xl min-h-[150px] md:min-h-[300px]">
+            <p className="text-center text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.3em]">Pilihan Jawaban</p>
             <Droppable droppableId="lobby" direction="vertical">
               {(provided) => (
                 <div {...provided.droppableProps} ref={provided.innerRef} className="flex flex-wrap gap-4 justify-center items-center">
@@ -276,13 +264,13 @@ export default function DragDropQuestion({ question, onAnswer, onUpdate }: DragD
                   {provided.placeholder}
                   {placements.lobby.length === 0 && (
                     <div className="py-20 text-center opacity-30 w-full">
-                       <p className="text-xs font-bold text-white uppercase italic">Semua Terpasang!</p>
+                       <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase italic">Semua Terpasang!</p>
                     </div>
                   )}
                 </div>
               )}
             </Droppable>
-            <p className="text-center text-[9px] font-bold text-white/30 uppercase mt-4">Tarik atau Klik untuk memilih</p>
+            <p className="text-center text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-4">Tarik atau Klik untuk memilih</p>
           </div>
         </div>
       </div>

@@ -48,7 +48,7 @@ export function LoopVisualizer({ maxIterations, label, speed = 500 }: LoopVisual
             onClick={handleStart}
             disabled={currentIteration >= maxIterations}
             size="sm"
-            className="gap-2"
+            className="gap-2 bg-teal-600 dark:bg-teal-500 hover:bg-teal-700 dark:hover:bg-teal-400 text-white shadow-md shadow-teal-600/25"
           >
             <Play className="h-4 w-4" />
             Jalankan
@@ -74,7 +74,7 @@ export function LoopVisualizer({ maxIterations, label, speed = 500 }: LoopVisual
               className={cn(
                 "w-8 h-8 rounded-md flex items-center justify-center text-sm font-mono transition-all duration-300",
                 i < currentIteration
-                  ? "bg-primary text-primary-foreground scale-105"
+                  ? "bg-teal-600 dark:bg-teal-500 text-white scale-105 shadow-md shadow-teal-500/25"
                   : "bg-muted text-muted-foreground"
               )}
             >
@@ -92,7 +92,7 @@ export function LoopVisualizer({ maxIterations, label, speed = 500 }: LoopVisual
           </span>
         ) : (
           output.map((line, i) => (
-            <div key={i} className="text-accent animate-in fade-in slide-in-from-left-2 duration-300">
+            <div key={i} className="text-teal-600 dark:text-teal-400 animate-in fade-in slide-in-from-left-2 duration-300">
               {line}
             </div>
           ))

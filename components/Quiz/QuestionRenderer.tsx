@@ -27,9 +27,9 @@ export default function QuestionRenderer({ question, onAnswer, onUpdate, current
   const isLegacy = ['mcq', 'boolean', 'multi_select'].includes(question.type);
   if (!isLegacy) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 bg-slate-50 rounded-[3rem] border-4 border-dashed border-slate-200">
-         <CircleDashed className="w-12 h-12 text-slate-300 animate-spin mb-4" />
-         <p className="text-slate-400 font-bold uppercase tracking-widest text-sm">Tipe Soal "{question.type}" Belum Tersedia</p>
+      <div className="flex flex-col items-center justify-center py-20 bg-slate-50 dark:bg-slate-800/30 rounded-[3rem] border-4 border-dashed border-teal-200 dark:border-teal-800">
+         <CircleDashed className="w-12 h-12 text-teal-300 dark:text-teal-600 animate-spin mb-4" />
+         <p className="text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest text-sm">Tipe Soal &quot;{question.type}&quot; Belum Tersedia</p>
       </div>
     );
   }
